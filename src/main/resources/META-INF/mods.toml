@@ -1,0 +1,29 @@
+modLoader="javafml" #mandatory
+loaderVersion="[40,)" #mandatory
+license="MIT" #mandatory
+issueTrackerURL="https://github.com/SihenZhang/SimpleBBQ/issues" #optional
+[[mods]] #mandatory
+modId="simplebbq" #mandatory
+version="${file.jarVersion}" #mandatory
+displayName="Simple BBQ" #mandatory
+#updateJSONURL="https://change.me.example.invalid/updates.json" #optional
+#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+#logoFile="examplemod.png" #optional
+#credits="Thanks for this example mod goes to Java" #optional
+authors="Si_hen,VVVHY,idyllicbean,SeraphJack" #optional
+description='''
+Relaxing and Enjoyable Barbeque.
+'''
+# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
+[[dependencies.simplebbq]] #optional
+    modId="forge" #mandatory
+    mandatory=true #mandatory
+    versionRange="[40,)" #mandatory
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.simplebbq]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.18.2,1.19)"
+    ordering="NONE"
+    side="BOTH"
