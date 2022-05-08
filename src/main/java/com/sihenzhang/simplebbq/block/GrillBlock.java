@@ -5,6 +5,7 @@ import com.sihenzhang.simplebbq.block.entity.GrillBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -53,6 +54,24 @@ public class GrillBlock extends BaseEntityBlock {
         return InteractionResult.PASS;
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if (!pState.is(pNewState.getBlock())) {
+            var blockentity = pLevel.getBlockEntity(pPos);
+            if (blockentity instanceof GrillBlockEntity grillBlockEntity) {
+                var inventory = grillBlockEntity.getInventory();
+                for (var i = 0; i < inventory.getSlots(); i++) {
+                    var stack = inventory.getStackInSlot(i);
+                    if (!stack.isEmpty()) {
+                        Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), stack);
+                    }
+                }
+            }
+            super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        }
+    }
+
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
@@ -64,15 +83,11 @@ public class GrillBlock extends BaseEntityBlock {
     @Override
     @SuppressWarnings("deprecation")
     public BlockState updateShape(BlockState pState, Direction pDirection, BlockState pNeighborState, LevelAccessor pLevel, BlockPos pCurrentPos, BlockPos pNeighborPos) {
-        return pDirection == Direction.DOWN && this.isCampfire(pNeighborState) && pNeighborState.hasProperty(BlockStateProperties.LIT) ? pState.setValue(HEATED, pNeighborState.getValue(BlockStateProperties.LIT)) : pState;
-    }
-
-    private boolean isCampfire(BlockState pState) {
-        return pState.is(BlockTags.CAMPFIRES);
+        return pDirection == Direction.DOWN ? pState.setValue(HEATED, this.isLitCampfire(pNeighborState)) : pState;
     }
 
     private boolean isLitCampfire(BlockState pState) {
-        return this.isCampfire(pState) && pState.hasProperty(BlockStateProperties.LIT) && pState.getValue(BlockStateProperties.LIT);
+        return pState.is(BlockTags.CAMPFIRES) && pState.hasProperty(BlockStateProperties.LIT) && pState.getValue(BlockStateProperties.LIT);
     }
 
     @Override

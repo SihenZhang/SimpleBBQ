@@ -9,12 +9,10 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -65,9 +63,8 @@ public class GrillBlockEntity extends BlockEntity {
                     if (pBlockEntity.cookingProgress[i] >= pBlockEntity.cookingTime[i]) {
                         var container = new SimpleContainer(stackInSlot);
                         var result = pLevel.getRecipeManager().getRecipeFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), container, pLevel).map(recipe -> recipe.assemble(container)).orElse(stackInSlot);
-                        Containers.dropItemStack(pLevel, pPos.getX() + 0.5, pPos.getY() + 0.5, pPos.getZ() + 0.5, result);
+                        Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), result);
                         pBlockEntity.inventory.setStackInSlot(i, ItemStack.EMPTY);
-                        pLevel.sendBlockUpdated(pPos, pState, pState, Block.UPDATE_ALL);
                     }
                 }
             }
@@ -82,27 +79,12 @@ public class GrillBlockEntity extends BlockEntity {
         }
 
         if (hasChanged) {
-            pBlockEntity.markUpdated(pLevel, pPos, pState);
+            setChanged(pLevel, pPos, pState);
         }
     }
 
-    private void sendTileEntityUpdatePacket() {
-        if (!level.isClientSide) {
-            var pkt = this.getUpdatePacket();
-            if (pkt != null) {
-                ((ServerLevel) level).getChunkSource().chunkMap.getPlayers(new ChunkPos(worldPosition), false).forEach(p -> p.connection.send(pkt));
-            }
-        }
-    }
-
-    private void markUpdated() {
-        this.setChanged();
-        this.sendTileEntityUpdatePacket();
-    }
-
-    private void markUpdated(Level pLevel, BlockPos pPos, BlockState pState) {
-        setChanged(pLevel, pPos, pState);
-        this.sendTileEntityUpdatePacket();
+    public ItemStackHandler getInventory() {
+        return inventory;
     }
 
     @Override
@@ -130,7 +112,7 @@ public class GrillBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag() {
         var tag = new CompoundTag();
-        this.saveAdditional(tag);
+        tag.put("Inventory", inventory.serializeNBT());
         return tag;
     }
 
@@ -140,24 +122,29 @@ public class GrillBlockEntity extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public Optional<GrillCookingRecipe> getCookableRecipe(ItemStack pStack) {
+    public Optional<GrillCookingRecipe> getCookableRecipe(ItemStack input) {
         for (var i = 0; i < inventory.getSlots(); i++) {
             if (inventory.getStackInSlot(i).isEmpty()) {
-                return level.getRecipeManager().getRecipeFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), new SimpleContainer(pStack), level);
+                return level.getRecipeManager().getRecipeFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), new SimpleContainer(input), level);
             }
         }
         return Optional.empty();
     }
 
-    public boolean placeFood(ItemStack pStack, int pCookTime) {
+    public boolean placeFood(ItemStack input, int cookTime) {
         for (var i = 0; i < inventory.getSlots(); i++) {
             if (inventory.getStackInSlot(i).isEmpty()) {
-                cookingTime[i] = pCookTime;
+                cookingTime[i] = cookTime;
                 cookingProgress[i] = 0;
-                inventory.setStackInSlot(i, pStack.split(1));
+                inventory.setStackInSlot(i, input.split(1));
                 return true;
             }
         }
         return false;
+    }
+
+    private void markUpdated() {
+        this.setChanged();
+        level.sendBlockUpdated(worldPosition, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL);
     }
 }

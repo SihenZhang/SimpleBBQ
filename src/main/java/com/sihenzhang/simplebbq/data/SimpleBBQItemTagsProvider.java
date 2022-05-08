@@ -11,8 +11,8 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import javax.annotation.Nullable;
 
 public class SimpleBBQItemTagsProvider extends ItemTagsProvider {
-    public SimpleBBQItemTagsProvider(DataGenerator dataGenerator, BlockTagsProvider blockTagsProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
-        super(dataGenerator, blockTagsProvider, modId, existingFileHelper);
+    public SimpleBBQItemTagsProvider(DataGenerator pGenerator, BlockTagsProvider pBlockTagsProvider, String modId, @Nullable ExistingFileHelper existingFileHelper) {
+        super(pGenerator, pBlockTagsProvider, modId, existingFileHelper);
     }
 
     @Override

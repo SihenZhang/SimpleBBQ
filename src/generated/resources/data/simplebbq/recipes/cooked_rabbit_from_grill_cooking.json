@@ -1,0 +1,8 @@
+{
+  "type": "simplebbq:grill_cooking",
+  "ingredient": {
+    "item": "minecraft:rabbit"
+  },
+  "result": "minecraft:cooked_rabbit",
+  "cookingtime": 400
+}
