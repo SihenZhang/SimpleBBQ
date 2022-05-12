@@ -6,6 +6,7 @@ import com.sihenzhang.simplebbq.block.entity.GrillBlockEntity;
 import com.sihenzhang.simplebbq.block.entity.SkeweringTableBlockEntity;
 import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
 import com.sihenzhang.simplebbq.recipe.SimpleBBQRecipeType;
+import com.sihenzhang.simplebbq.recipe.SkeweringRecipe;
 import net.minecraft.core.Registry;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -26,6 +27,8 @@ public final class SimpleBBQRegistry {
 
     public static final RegistryObject<RecipeType<GrillCookingRecipe>> GRILL_COOKING_RECIPE_TYPE = RECIPE_TYPES.register("grill_cooking", () -> new SimpleBBQRecipeType<>("grill_cooking"));
     public static final RegistryObject<RecipeSerializer<GrillCookingRecipe>> GRILL_COOKING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("grill_cooking", GrillCookingRecipe.Serializer::new);
+    public static final RegistryObject<RecipeType<SkeweringRecipe>> SKEWERING_RECIPE_TYPE = RECIPE_TYPES.register("skewering", () -> new SimpleBBQRecipeType<>("skewering"));
+    public static final RegistryObject<RecipeSerializer<SkeweringRecipe>> SKEWERING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("skewering", SkeweringRecipe.Serializer::new);
 
     public static final RegistryObject<Block> GRILL_BLOCK = BLOCKS.register("grill", GrillBlock::new);
     public static final RegistryObject<Item> GRILL_BLOCK_ITEM = ITEMS.register("grill", () -> new BlockItem(GRILL_BLOCK.get(), new Item.Properties().tab(SimpleBBQ.TAB)));

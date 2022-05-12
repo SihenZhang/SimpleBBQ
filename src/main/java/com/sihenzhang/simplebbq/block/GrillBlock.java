@@ -26,6 +26,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import javax.annotation.Nullable;
 
@@ -34,7 +35,7 @@ public class GrillBlock extends BaseEntityBlock {
 
     public GrillBlock() {
         super(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL));
-        this.registerDefaultState(this.stateDefinition.any().setValue(HEATED, false));
+        this.registerDefaultState(stateDefinition.any().setValue(HEATED, false));
     }
 
     @Override
@@ -58,15 +59,9 @@ public class GrillBlock extends BaseEntityBlock {
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (!pState.is(pNewState.getBlock())) {
-            var blockentity = pLevel.getBlockEntity(pPos);
-            if (blockentity instanceof GrillBlockEntity grillBlockEntity) {
-                var inventory = grillBlockEntity.getInventory();
-                for (var i = 0; i < inventory.getSlots(); i++) {
-                    var stack = inventory.getStackInSlot(i);
-                    if (!stack.isEmpty()) {
-                        Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), stack);
-                    }
-                }
+            var blockEntity = pLevel.getBlockEntity(pPos);
+            if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
+                Containers.dropContents(pLevel, pPos, new RecipeWrapper(grillBlockEntity.getInventory()));
             }
             super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
         }

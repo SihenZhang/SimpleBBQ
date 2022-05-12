@@ -4,6 +4,7 @@ import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.GrillBlock;
 import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
@@ -17,6 +18,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 
 import javax.annotation.Nonnull;
@@ -44,6 +48,7 @@ public class GrillBlockEntity extends BlockEntity {
             markUpdated();
         }
     };
+    private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inventory);
     private final int[] cookingProgress = new int[SLOT_NUM];
     private final int[] cookingTime = new int[SLOT_NUM];
 
@@ -146,5 +151,14 @@ public class GrillBlockEntity extends BlockEntity {
     private void markUpdated() {
         this.setChanged();
         level.sendBlockUpdated(worldPosition, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL);
+    }
+
+    @Nonnull
+    @Override
+    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
+        if (cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) {
+            return inventoryCap.cast();
+        }
+        return super.getCapability(cap, side);
     }
 }

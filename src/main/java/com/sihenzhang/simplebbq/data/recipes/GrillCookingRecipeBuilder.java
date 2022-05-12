@@ -70,12 +70,12 @@ public class GrillCookingRecipeBuilder implements RecipeBuilder {
 
         @Override
         public void serializeRecipeData(JsonObject pJson) {
-            if (!this.group.isEmpty()) {
-                pJson.addProperty("group", this.group);
+            if (!group.isEmpty()) {
+                pJson.addProperty("group", group);
             }
-            pJson.add("ingredient", this.ingredient.toJson());
-            pJson.addProperty("result", ForgeRegistries.ITEMS.getKey(this.result).toString());
-            pJson.addProperty("cookingtime", this.cookingTime);
+            pJson.add("ingredient", ingredient.toJson());
+            pJson.addProperty("result", ForgeRegistries.ITEMS.getKey(result).toString());
+            pJson.addProperty("cookingtime", cookingTime);
         }
 
         @Override

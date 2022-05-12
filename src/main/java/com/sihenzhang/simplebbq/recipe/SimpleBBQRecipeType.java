@@ -13,6 +13,6 @@ public class SimpleBBQRecipeType<T extends Recipe<?>> implements RecipeType<T> {
 
     @Override
     public String toString() {
-        return SimpleBBQ.MOD_ID + ":" + this.identifier;
+        return SimpleBBQ.MOD_ID + ":" + identifier;
     }
 }

@@ -33,8 +33,7 @@ public class GrillCookingRecipe extends AbstractCookingRecipe {
         @Override
         public GrillCookingRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
             var group = GsonHelper.getAsString(pSerializedRecipe, "group", "");
-            var ingredientJsonElement = GsonHelper.isArrayNode(pSerializedRecipe, "ingredient") ? GsonHelper.getAsJsonArray(pSerializedRecipe, "ingredient") : GsonHelper.getAsJsonObject(pSerializedRecipe, "ingredient");
-            var ingredient = Ingredient.fromJson(ingredientJsonElement);
+            var ingredient = JsonUtils.getAsIngredient(pSerializedRecipe, "ingredient");
             var result = JsonUtils.getAsItemStack(pSerializedRecipe, "result");
             var cookingTime = GsonHelper.getAsInt(pSerializedRecipe, "cookingtime", 100);
             return new GrillCookingRecipe(pRecipeId, group, ingredient, result, cookingTime);
