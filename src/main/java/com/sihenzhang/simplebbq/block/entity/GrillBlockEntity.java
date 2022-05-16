@@ -3,6 +3,7 @@ package com.sihenzhang.simplebbq.block.entity;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.GrillBlock;
 import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
+import com.sihenzhang.simplebbq.util.CampfireData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -48,12 +49,17 @@ public class GrillBlockEntity extends BlockEntity {
             markUpdated();
         }
     };
+    private final CampfireData campfireData = new CampfireData();
     private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inventory);
     private final int[] cookingProgress = new int[SLOT_NUM];
     private final int[] cookingTime = new int[SLOT_NUM];
 
     public GrillBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
+        var data = SuperDirtyCrockPotTMAdvancedTempStateDataHolder.get(getBlockPos());
+        if (data != null) {
+            campfireData.deserialize(data.serialize());
+        }
     }
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, GrillBlockEntity pBlockEntity) {
@@ -92,9 +98,14 @@ public class GrillBlockEntity extends BlockEntity {
         return inventory;
     }
 
+    public CampfireData getCampfireData() {
+        return campfireData;
+    }
+
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
+        campfireData.deserialize(pTag.getCompound("CampfireData"));
         inventory.deserializeNBT(pTag.getCompound("Inventory"));
         if (pTag.contains("CookingTimes", Tag.TAG_INT_ARRAY)) {
             var cookingProcessArray = pTag.getIntArray("CookingTimes");
@@ -109,6 +120,7 @@ public class GrillBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
+        pTag.put("CampfireData", campfireData.serialize());
         pTag.put("Inventory", inventory.serializeNBT());
         pTag.putIntArray("CookingTimes", cookingProgress);
         pTag.putIntArray("CookingTotalTimes", cookingTime);
@@ -118,6 +130,7 @@ public class GrillBlockEntity extends BlockEntity {
     public CompoundTag getUpdateTag() {
         var tag = new CompoundTag();
         tag.put("Inventory", inventory.serializeNBT());
+        tag.put("CampfireData", campfireData.serialize());
         return tag;
     }
 

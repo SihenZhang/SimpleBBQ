@@ -12,8 +12,8 @@ import net.minecraft.world.level.ItemLike;
 import java.util.function.Consumer;
 
 public class SimpleBBQRecipeProvider extends RecipeProvider {
-    public SimpleBBQRecipeProvider(DataGenerator pGenerator) {
-        super(pGenerator);
+    public SimpleBBQRecipeProvider(DataGenerator generator) {
+        super(generator);
     }
 
     @Override

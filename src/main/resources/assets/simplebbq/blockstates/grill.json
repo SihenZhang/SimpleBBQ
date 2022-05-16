@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "simplebbq:block/grill",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "simplebbq:block/grill",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "simplebbq:block/grill"
+    },
+    "facing=west": {
+      "model": "simplebbq:block/grill",
+      "y": 90
+    }
+  }
+}

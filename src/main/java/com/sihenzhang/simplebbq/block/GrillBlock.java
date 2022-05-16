@@ -12,10 +12,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
-import net.minecraft.world.level.block.BaseEntityBlock;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RenderShape;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -23,6 +20,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.phys.BlockHitResult;
@@ -32,10 +30,11 @@ import javax.annotation.Nullable;
 
 public class GrillBlock extends BaseEntityBlock {
     public static final BooleanProperty HEATED = BooleanProperty.create("heated");
+    public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public GrillBlock() {
-        super(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL));
-        this.registerDefaultState(stateDefinition.any().setValue(HEATED, false));
+        super(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL).lightLevel(state -> state.getValue(HEATED) ? 15 : 0).noCollission());
+        this.registerDefaultState(stateDefinition.any().setValue(HEATED, false).setValue(FACING, Direction.NORTH));
     }
 
     @Override
@@ -72,7 +71,7 @@ public class GrillBlock extends BaseEntityBlock {
     public BlockState getStateForPlacement(BlockPlaceContext pContext) {
         var level = pContext.getLevel();
         var pos = pContext.getClickedPos();
-        return this.defaultBlockState().setValue(HEATED, this.isLitCampfire(level.getBlockState(pos.below())));
+        return this.defaultBlockState().setValue(HEATED, this.isLitCampfire(level.getBlockState(pos.below()))).setValue(FACING, pContext.getHorizontalDirection());
     }
 
     @Override
@@ -91,9 +90,22 @@ public class GrillBlock extends BaseEntityBlock {
         return RenderShape.MODEL;
     }
 
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState rotate(BlockState pState, Rotation pRot) {
+        return pState.setValue(FACING, pRot.rotate(pState.getValue(FACING)));
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public BlockState mirror(BlockState pState, Mirror pMirror) {
+        return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
+    }
+
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
-        pBuilder.add(HEATED);
+        pBuilder.add(HEATED, FACING);
     }
 
     @Nullable
