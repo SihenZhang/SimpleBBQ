@@ -7,6 +7,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.CampfireBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public final class CampfireData {
@@ -54,6 +55,6 @@ public final class CampfireData {
     }
 
     public static boolean isCampfire(BlockState state) {
-        return state.is(BlockTags.CAMPFIRES);
+        return state.is(BlockTags.CAMPFIRES) && state.hasProperty(BlockStateProperties.LIT);
     }
 }

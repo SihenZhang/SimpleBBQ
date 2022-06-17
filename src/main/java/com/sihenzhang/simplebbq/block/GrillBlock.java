@@ -85,10 +85,10 @@ public class GrillBlock extends BaseEntityBlock {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
     }
-
 
     @Override
     @SuppressWarnings("deprecation")

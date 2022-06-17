@@ -4,14 +4,17 @@ import com.sihenzhang.simplebbq.SimpleBBQ;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.entity.SuperDirtyCrockPotTMAdvancedTempStateDataHolder;
 import com.sihenzhang.simplebbq.util.CampfireData;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.gameevent.GameEvent;
 
-public final class GrillItem extends BlockItem {
+public class GrillItem extends BlockItem {
     public GrillItem() {
         super(SimpleBBQRegistry.GRILL_BLOCK.get(), new Item.Properties().tab(SimpleBBQ.TAB));
     }
@@ -19,13 +22,16 @@ public final class GrillItem extends BlockItem {
     @Override
     public InteractionResult useOn(UseOnContext pContext) {
         var level = pContext.getLevel();
-        BlockState state = level.getBlockState(pContext.getClickedPos());
+        var pos = pContext.getClickedPos();
+        var state = level.getBlockState(pos);
         if (CampfireData.isCampfire(state)) {
-            SuperDirtyCrockPotTMAdvancedTempStateDataHolder.put(
-                    pContext.getClickedPos(),
-                    new CampfireData(state)
-            );
-            level.setBlock(pContext.getClickedPos(), Blocks.AIR.defaultBlockState(), 3);
+            var player = pContext.getPlayer();
+            SuperDirtyCrockPotTMAdvancedTempStateDataHolder.put(pos, new CampfireData(state));
+            level.playSound(null, pos, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 1.0F, 1.5F);
+            level.setBlockAndUpdate(pos, SimpleBBQRegistry.GRILL_BLOCK.get().defaultBlockState());
+            level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
+            player.awardStat(Stats.ITEM_USED.get(pContext.getItemInHand().getItem()));
+            return InteractionResult.SUCCESS;
         }
         return super.useOn(pContext);
     }
