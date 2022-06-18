@@ -1,9 +1,9 @@
 package com.sihenzhang.simplebbq.block.entity;
 
+import com.google.common.base.Preconditions;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.GrillBlock;
 import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
-import com.sihenzhang.simplebbq.util.CampfireData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -11,27 +11,35 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class GrillBlockEntity extends BlockEntity {
     private static final int BURN_COOL_SPEED = 2;
     private static final int SLOT_NUM = 2;
 
+    private final CampfireData campfireData = new CampfireData();
     private final ItemStackHandler inventory = new ItemStackHandler(SLOT_NUM) {
         @Override
         public int getSlotLimit(int slot) {
@@ -49,23 +57,22 @@ public class GrillBlockEntity extends BlockEntity {
             markUpdated();
         }
     };
-    private final CampfireData campfireData = new CampfireData();
     private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inventory);
     private final int[] cookingProgress = new int[SLOT_NUM];
     private final int[] cookingTime = new int[SLOT_NUM];
 
     public GrillBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
-        var data = SuperDirtyCrockPotTMAdvancedTempStateDataHolder.get(getBlockPos());
+        var data = CampfireDataCache.get(pWorldPosition);
         if (data != null) {
-            campfireData.deserialize(data.serialize());
+            campfireData.deserializeNBT(data.serializeNBT());
         }
     }
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, GrillBlockEntity pBlockEntity) {
         var hasChanged = false;
 
-        if (pState.hasProperty(GrillBlock.HEATED) && pState.getValue(GrillBlock.HEATED)) {
+        if (pState.hasProperty(GrillBlock.LIT) && pState.getValue(GrillBlock.LIT)) {
             for (var i = 0; i < pBlockEntity.inventory.getSlots(); i++) {
                 var stackInSlot = pBlockEntity.inventory.getStackInSlot(i);
                 if (!stackInSlot.isEmpty()) {
@@ -105,7 +112,7 @@ public class GrillBlockEntity extends BlockEntity {
     @Override
     public void load(CompoundTag pTag) {
         super.load(pTag);
-        campfireData.deserialize(pTag.getCompound("CampfireData"));
+        campfireData.deserializeNBT(pTag.getCompound("CampfireData"));
         inventory.deserializeNBT(pTag.getCompound("Inventory"));
         if (pTag.contains("CookingTimes", Tag.TAG_INT_ARRAY)) {
             var cookingProcessArray = pTag.getIntArray("CookingTimes");
@@ -120,7 +127,7 @@ public class GrillBlockEntity extends BlockEntity {
     @Override
     protected void saveAdditional(CompoundTag pTag) {
         super.saveAdditional(pTag);
-        pTag.put("CampfireData", campfireData.serialize());
+        pTag.put("CampfireData", campfireData.serializeNBT());
         pTag.put("Inventory", inventory.serializeNBT());
         pTag.putIntArray("CookingTimes", cookingProgress);
         pTag.putIntArray("CookingTotalTimes", cookingTime);
@@ -129,8 +136,8 @@ public class GrillBlockEntity extends BlockEntity {
     @Override
     public CompoundTag getUpdateTag() {
         var tag = new CompoundTag();
+        tag.put("CampfireData", campfireData.serializeNBT());
         tag.put("Inventory", inventory.serializeNBT());
-        tag.put("CampfireData", campfireData.serialize());
         return tag;
     }
 
@@ -173,5 +180,73 @@ public class GrillBlockEntity extends BlockEntity {
             return inventoryCap.cast();
         }
         return super.getCapability(cap, side);
+    }
+
+    public static final class CampfireData implements INBTSerializable<CompoundTag> {
+        public ResourceLocation registryName = Blocks.AIR.getRegistryName();
+        public boolean lit = false;
+        public Direction facing;
+
+        public CampfireData() {
+        }
+
+        public CampfireData(BlockState state) {
+            Preconditions.checkArgument(GrillBlock.isCampfire(state), "State must be a Campfire.");
+            this.registryName = state.getBlock().getRegistryName();
+            this.lit = state.getValue(BlockStateProperties.LIT);
+            if (state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+                this.facing = state.getValue(BlockStateProperties.HORIZONTAL_FACING);
+            }
+        }
+
+        @Override
+        public CompoundTag serializeNBT() {
+            CompoundTag tag = new CompoundTag();
+            tag.putString("RegistryName", registryName.toString());
+            tag.putBoolean("Lit", lit);
+            if (facing != null) {
+                tag.putString("Facing", facing.name());
+            }
+            return tag;
+        }
+
+        @Override
+        public void deserializeNBT(CompoundTag nbt) {
+            registryName = new ResourceLocation(nbt.getString("RegistryName"));
+            lit = nbt.getBoolean("Lit");
+            if (nbt.contains("Facing", Tag.TAG_STRING)) {
+                facing = Direction.valueOf(nbt.getString("Facing"));
+            }
+        }
+
+        public BlockState toBlockState() {
+            if (this.registryName == null) {
+                return Blocks.AIR.defaultBlockState();
+            }
+            var state = ForgeRegistries.BLOCKS.getValue(registryName).defaultBlockState();
+            if (state.hasProperty(BlockStateProperties.LIT)) {
+                state = state.setValue(BlockStateProperties.LIT, lit);
+            }
+            if (facing != null && state.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+                state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
+            }
+            return state;
+        }
+    }
+
+    public static final class CampfireDataCache {
+        private static final Map<BlockPos, CampfireData> CACHE = new HashMap<>();
+
+        public static CampfireData get(BlockPos pos) {
+            synchronized (CACHE) {
+                return CACHE.remove(pos);
+            }
+        }
+
+        public static void put(BlockPos pos, CampfireData data) {
+            synchronized (CACHE) {
+                CACHE.put(pos, data);
+            }
+        }
     }
 }
