@@ -12,7 +12,7 @@ displayName="Simple BBQ" #mandatory
 #credits="Thanks for this example mod goes to Java" #optional
 authors="Si_hen,VVVHY,idyllicbean,SeraphJack" #optional
 description='''
-Relaxing and Enjoyable Barbeque.
+Relaxing and Enjoyable Barbecue.
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.simplebbq]] #optional

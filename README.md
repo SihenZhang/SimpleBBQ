@@ -1,2 +1,2 @@
 # SimpleBBQ
-Relaxing and Enjoyable Barbeque
+Relaxing and Enjoyable Barbecue
