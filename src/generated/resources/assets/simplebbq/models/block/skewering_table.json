@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable_with_bottom",
+  "textures": {
+    "side": "simplebbq:block/skewering_table_side",
+    "front": "simplebbq:block/skewering_table_front",
+    "bottom": "simplebbq:block/skewering_table_bottom",
+    "top": "minecraft:block/smooth_stone"
+  }
+}

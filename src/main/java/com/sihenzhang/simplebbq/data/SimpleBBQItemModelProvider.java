@@ -14,5 +14,6 @@ public class SimpleBBQItemModelProvider extends ItemModelProvider {
     @Override
     protected void registerModels() {
         this.withExistingParent("grill", RLUtils.createRL("block/grill"));
+        this.withExistingParent("skewering_table", RLUtils.createRL("block/skewering_table"));
     }
 }
