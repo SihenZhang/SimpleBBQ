@@ -1,6 +1,8 @@
 package com.sihenzhang.simplebbq.block.entity;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.HashBasedTable;
+import com.google.common.collect.Table;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.GrillBlock;
 import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
@@ -31,8 +33,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 public class GrillBlockEntity extends BlockEntity {
@@ -60,17 +60,25 @@ public class GrillBlockEntity extends BlockEntity {
     private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inventory);
     private final int[] cookingProgress = new int[SLOT_NUM];
     private final int[] cookingTime = new int[SLOT_NUM];
+    private boolean firstTick = true;
 
     public GrillBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
-        var data = CampfireDataCache.get(pWorldPosition);
-        if (data != null) {
-            campfireData.deserializeNBT(data.serializeNBT());
-        }
     }
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, GrillBlockEntity pBlockEntity) {
         var hasChanged = false;
+
+        if (pBlockEntity.firstTick) {
+            pBlockEntity.firstTick = false;
+            var data = CampfireDataCache.get(pLevel, pPos);
+            if (data != null) {
+                pBlockEntity.campfireData.deserializeNBT(data.serializeNBT());
+                pState = pState.setValue(GrillBlock.LIT, pBlockEntity.campfireData.lit);
+                pLevel.setBlockAndUpdate(pPos, pState);
+                hasChanged = true;
+            }
+        }
 
         if (pState.hasProperty(GrillBlock.LIT) && pState.getValue(GrillBlock.LIT)) {
             for (var i = 0; i < pBlockEntity.inventory.getSlots(); i++) {
@@ -235,17 +243,17 @@ public class GrillBlockEntity extends BlockEntity {
     }
 
     public static final class CampfireDataCache {
-        private static final Map<BlockPos, CampfireData> CACHE = new HashMap<>();
+        private static final Table<Level, BlockPos, CampfireData> CACHE = HashBasedTable.create();
 
-        public static CampfireData get(BlockPos pos) {
+        public static CampfireData get(Level level, BlockPos pos) {
             synchronized (CACHE) {
-                return CACHE.remove(pos);
+                return CACHE.remove(level, pos);
             }
         }
 
-        public static void put(BlockPos pos, CampfireData data) {
+        public static void put(Level level, BlockPos pos, CampfireData data) {
             synchronized (CACHE) {
-                CACHE.put(pos, data);
+                CACHE.put(level, pos, data);
             }
         }
     }

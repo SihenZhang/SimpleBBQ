@@ -4,14 +4,11 @@ import com.sihenzhang.simplebbq.SimpleBBQ;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.GrillBlock;
 import com.sihenzhang.simplebbq.block.entity.GrillBlockEntity;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
-import net.minecraft.world.level.gameevent.GameEvent;
 
 public class GrillItem extends BlockItem {
     public GrillItem() {
@@ -24,13 +21,19 @@ public class GrillItem extends BlockItem {
         var pos = pContext.getClickedPos();
         var state = level.getBlockState(pos);
         if (GrillBlock.isCampfire(state)) {
-            var player = pContext.getPlayer();
-            GrillBlockEntity.CampfireDataCache.put(pos, new GrillBlockEntity.CampfireData(state));
-            level.playSound(null, pos, SoundEvents.METAL_PLACE, SoundSource.BLOCKS, 1.0F, 1.5F);
-            level.setBlockAndUpdate(pos, SimpleBBQRegistry.GRILL_BLOCK.get().defaultBlockState().setValue(GrillBlock.FACING, pContext.getHorizontalDirection()));
-            level.gameEvent(player, GameEvent.BLOCK_CHANGE, pos);
-            player.awardStat(Stats.ITEM_USED.get(pContext.getItemInHand().getItem()));
-            return InteractionResult.SUCCESS;
+            if (!level.isClientSide) {
+                GrillBlockEntity.CampfireDataCache.put(level, pos, new GrillBlockEntity.CampfireData(state));
+            }
+            // remove the old block to replace it with the grill
+            level.removeBlock(pos, false);
+            // place the grill
+            var placeResult = this.place(new BlockPlaceContext(pContext));
+            if (placeResult.consumesAction()) {
+                return placeResult;
+            } else {
+                // if failed to place the grill, put the old block back
+                level.setBlockAndUpdate(pos, state);
+            }
         }
         return super.useOn(pContext);
     }
