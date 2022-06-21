@@ -38,5 +38,6 @@ public final class SimpleBBQRegistry {
     public static final RegistryObject<Item> SKEWERING_TABLE_BLOCK_ITEM = ITEMS.register("skewering_table", () -> new BlockItem(SKEWERING_TABLE_BLOCK.get(), new Item.Properties().tab(SimpleBBQ.TAB)));
     public static final RegistryObject<BlockEntityType<SkeweringTableBlockEntity>> SKEWERING_TABLE_BLOCK_ENTITY = BLOCK_ENTITIES.register("skewering_table", () -> BlockEntityType.Builder.of(SkeweringTableBlockEntity::new, SKEWERING_TABLE_BLOCK.get()).build(null));
 
-//    public static final RegistryObject<Item> SKEWERED_BEEF_RAW_ITEM = ITEMS.register("skewered_beef_raw", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
+    public static final RegistryObject<Item> RAW_SKEWERED_BEEF_ITEM = ITEMS.register("raw_skewered_beef", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
+    public static final RegistryObject<Item> COOKED_SKEWERED_BEEF_ITEM = ITEMS.register("cooked_skewered_beef", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
 }

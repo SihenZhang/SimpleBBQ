@@ -3,6 +3,7 @@ package com.sihenzhang.simplebbq.client;
 import com.sihenzhang.simplebbq.SimpleBBQ;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.client.renderer.blockentity.GrillRenderer;
+import com.sihenzhang.simplebbq.client.renderer.blockentity.SkeweringTableRenderer;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,5 +22,6 @@ public class ClientRegistry {
     @SubscribeEvent
     public static void onRegisterRenderer(final EntityRenderersEvent.RegisterRenderers event) {
         event.registerBlockEntityRenderer(SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), GrillRenderer::new);
+        event.registerBlockEntityRenderer(SimpleBBQRegistry.SKEWERING_TABLE_BLOCK_ENTITY.get(), SkeweringTableRenderer::new);
     }
 }
