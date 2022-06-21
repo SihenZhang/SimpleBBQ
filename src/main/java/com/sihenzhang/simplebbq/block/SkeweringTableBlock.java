@@ -26,7 +26,7 @@ public class SkeweringTableBlock extends BaseEntityBlock {
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public SkeweringTableBlock() {
-        super(Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD));
+        super(Properties.of(Material.WOOD).strength(2.5F).sound(SoundType.WOOD).noOcclusion());
         this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 

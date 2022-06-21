@@ -22,7 +22,7 @@ public class SkeweringTableRenderer implements BlockEntityRenderer<SkeweringTabl
         var itemStack = inventory.getStackInSlot(0);
         if (!itemStack.isEmpty()) {
             pPoseStack.pushPose();
-            pPoseStack.translate(0.5D, 1.05D, 0.5D);
+            pPoseStack.translate(0.5D, 1.02D, 0.5D);
             float f = -direction.toYRot();
             pPoseStack.mulPose(Vector3f.YP.rotationDegrees(f));
             pPoseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
