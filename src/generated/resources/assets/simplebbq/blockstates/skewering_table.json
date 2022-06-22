@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "simplebbq:block/skewering_table"
+    },
+    "facing=south": {
+      "model": "simplebbq:block/skewering_table",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "simplebbq:block/skewering_table",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "simplebbq:block/skewering_table",
+      "y": 90
+    }
+  }
+}

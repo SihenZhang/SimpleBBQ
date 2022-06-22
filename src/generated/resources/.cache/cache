@@ -1,4 +1,6 @@
-11f6b1660dedca7bc14b5540721376f458dc97e6 assets/simplebbq/models/block/skewering_table.json
+8626c8b2bc6dda0e39ae0615ec2729c0530c91ff assets/simplebbq/blockstates/grill.json
+901d9a13446ccc64c51c8914648df47e087ef4ab assets/simplebbq/blockstates/skewering_table.json
+0c1458fd94143b5292be02dea66ab09901f13a95 assets/simplebbq/models/block/skewering_table.json
 d8585569af532c83261883c431c7c341b5a3baa8 assets/simplebbq/models/item/grill.json
 e2938aa855b6bfd897222757d62fd07455433cc9 assets/simplebbq/models/item/skewering_table.json
 1779652e240c9228ec07a6fc3d12eefd13cc565e data/minecraft/tags/blocks/mineable/axe.json
