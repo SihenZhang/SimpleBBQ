@@ -28,9 +28,8 @@ public class GrillItem extends BlockItem {
             var placeResult = this.place(new BlockPlaceContext(pContext));
             if (placeResult.consumesAction()) {
                 var blockEntity = level.getBlockEntity(pos);
-                if (blockEntity != null) {
-                    var cast = (GrillBlockEntity) blockEntity;
-                    cast.initCampfireState(campfireData);
+                if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
+                    grillBlockEntity.initCampfireState(campfireData);
                 }
                 return placeResult;
             } else {

@@ -1,8 +1,6 @@
 package com.sihenzhang.simplebbq.block.entity;
 
 import com.google.common.base.Preconditions;
-import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.GrillBlock;
 import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
@@ -66,18 +64,13 @@ public class GrillBlockEntity extends BlockEntity {
     }
 
     public void initCampfireState(CampfireData data) {
-        var level = this.getLevel();
-        var pos = this.getBlockPos();
-        var state = this.getBlockState();
-
         if (level == null || data == null) {
             return;
         }
-
-        this.campfireData.deserializeNBT(data.serializeNBT());
-        state = state.setValue(GrillBlock.LIT, campfireData.lit);
-        level.setBlockAndUpdate(pos, state);
-        setChanged();
+        campfireData.deserializeNBT(data.serializeNBT());
+        var state = this.getBlockState().setValue(GrillBlock.LIT, campfireData.lit);
+        level.setBlockAndUpdate(worldPosition, state);
+        setChanged(level, worldPosition, state);
     }
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, GrillBlockEntity pBlockEntity) {
