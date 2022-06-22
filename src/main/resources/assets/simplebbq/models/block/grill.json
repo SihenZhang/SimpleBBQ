@@ -4,7 +4,8 @@
 	"textures": {
 		"3": "simplebbq:block/grill_top",
 		"4": "simplebbq:block/grill_side",
-		"5": "simplebbq:block/grill_front"
+		"5": "simplebbq:block/grill_front",
+		"particle": "simplebbq:block/grill_particle"
 	},
 	"elements": [
 		{
