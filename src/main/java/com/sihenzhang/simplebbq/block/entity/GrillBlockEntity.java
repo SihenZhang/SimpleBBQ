@@ -76,6 +76,13 @@ public class GrillBlockEntity extends BlockEntity {
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, GrillBlockEntity pBlockEntity) {
         var hasChanged = false;
 
+        // sync the campfire state
+        if (pState.hasProperty(GrillBlock.LIT) && pState.getValue(GrillBlock.LIT) != pBlockEntity.campfireData.lit) {
+            pState = pState.setValue(GrillBlock.LIT, pBlockEntity.campfireData.lit);
+            pLevel.setBlockAndUpdate(pPos, pState);
+            hasChanged = true;
+        }
+
         if (pState.hasProperty(GrillBlock.LIT) && pState.getValue(GrillBlock.LIT)) {
             for (var i = 0; i < pBlockEntity.inventory.getSlots(); i++) {
                 var stackInSlot = pBlockEntity.inventory.getStackInSlot(i);
@@ -111,6 +118,13 @@ public class GrillBlockEntity extends BlockEntity {
 
     public CampfireData getCampfireData() {
         return campfireData;
+    }
+
+    public void setCampfireData(CampfireData data) {
+        if (level != null) {
+            campfireData.deserializeNBT(data.serializeNBT());
+            this.markUpdated();
+        }
     }
 
     @Override
@@ -235,6 +249,12 @@ public class GrillBlockEntity extends BlockEntity {
                 state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
             }
             return state;
+        }
+
+        public CampfireData copy() {
+            var newCampfireData = new GrillBlockEntity.CampfireData();
+            newCampfireData.deserializeNBT(this.serializeNBT());
+            return newCampfireData;
         }
     }
 }
