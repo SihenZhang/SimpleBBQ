@@ -1,0 +1,8 @@
+{
+  "type": "simplebbq:grill_cooking",
+  "ingredient": {
+    "item": "simplebbq:raw_skewered_pork"
+  },
+  "result": "simplebbq:cooked_skewered_pork",
+  "cookingtime": 400
+}

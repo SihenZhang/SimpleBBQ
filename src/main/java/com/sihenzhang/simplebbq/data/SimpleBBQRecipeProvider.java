@@ -33,9 +33,15 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
 
         // skewering recipe
         skeweringRecipe(pFinishedRecipeConsumer, Items.BEEF, SimpleBBQRegistry.RAW_SKEWERED_BEEF_ITEM.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.PORKCHOP, SimpleBBQRegistry.RAW_SKEWERED_PORK_ITEM.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.COD, SimpleBBQRegistry.RAW_SKEWERED_COD_ITEM.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.SALMON, SimpleBBQRegistry.RAW_SKEWERED_SALMON_ITEM.get());
 
         // skewer cooking recipe
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_BEEF_ITEM.get(), SimpleBBQRegistry.COOKED_SKEWERED_BEEF_ITEM.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_PORK_ITEM.get(), SimpleBBQRegistry.COOKED_SKEWERED_PORK_ITEM.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_COD_ITEM.get(), SimpleBBQRegistry.COOKED_SKEWERED_COD_ITEM.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_SALMON_ITEM.get(), SimpleBBQRegistry.COOKED_SKEWERED_SALMON_ITEM.get(), 400);
     }
 
     protected static void grillCookingRecipe(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pIngredient, ItemLike pResult, int pCookingTime) {
