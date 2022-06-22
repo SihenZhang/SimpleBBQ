@@ -21,14 +21,17 @@ public class GrillItem extends BlockItem {
         var pos = pContext.getClickedPos();
         var state = level.getBlockState(pos);
         if (GrillBlock.isCampfire(state)) {
-            if (!level.isClientSide) {
-                GrillBlockEntity.CampfireDataCache.put(level, pos, new GrillBlockEntity.CampfireData(state));
-            }
+            GrillBlockEntity.CampfireDataCache.put(level, pos, new GrillBlockEntity.CampfireData(state));
             // remove the old block to replace it with the grill
             level.removeBlock(pos, false);
             // place the grill
             var placeResult = this.place(new BlockPlaceContext(pContext));
             if (placeResult.consumesAction()) {
+                var blockEntity = level.getBlockEntity(pos);
+                if (blockEntity != null) {
+                    var cast = (GrillBlockEntity) blockEntity;
+                    cast.initCampfireState();
+                }
                 return placeResult;
             } else {
                 // if failed to place the grill, put the old block back

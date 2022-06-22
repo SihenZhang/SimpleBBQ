@@ -66,6 +66,22 @@ public class GrillBlockEntity extends BlockEntity {
         super(SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
     }
 
+    public void initCampfireState() {
+        var level = this.getLevel();
+        var pos = this.getBlockPos();
+        var data = CampfireDataCache.get(level, pos);
+        var state = this.getBlockState();
+
+        if (level == null || data == null) {
+            return;
+        }
+
+        this.campfireData.deserializeNBT(data.serializeNBT());
+        state = state.setValue(GrillBlock.LIT, campfireData.lit);
+        level.setBlockAndUpdate(pos, state);
+        setChanged();
+    }
+
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, GrillBlockEntity pBlockEntity) {
         var hasChanged = false;
 
