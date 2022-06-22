@@ -60,16 +60,14 @@ public class GrillBlockEntity extends BlockEntity {
     private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inventory);
     private final int[] cookingProgress = new int[SLOT_NUM];
     private final int[] cookingTime = new int[SLOT_NUM];
-    private boolean firstTick = true;
 
     public GrillBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
     }
 
-    public void initCampfireState() {
+    public void initCampfireState(CampfireData data) {
         var level = this.getLevel();
         var pos = this.getBlockPos();
-        var data = CampfireDataCache.get(level, pos);
         var state = this.getBlockState();
 
         if (level == null || data == null) {
@@ -84,17 +82,6 @@ public class GrillBlockEntity extends BlockEntity {
 
     public static void serverTick(Level pLevel, BlockPos pPos, BlockState pState, GrillBlockEntity pBlockEntity) {
         var hasChanged = false;
-
-        if (pBlockEntity.firstTick) {
-            pBlockEntity.firstTick = false;
-            var data = CampfireDataCache.get(pLevel, pPos);
-            if (data != null) {
-                pBlockEntity.campfireData.deserializeNBT(data.serializeNBT());
-                pState = pState.setValue(GrillBlock.LIT, pBlockEntity.campfireData.lit);
-                pLevel.setBlockAndUpdate(pPos, pState);
-                hasChanged = true;
-            }
-        }
 
         if (pState.hasProperty(GrillBlock.LIT) && pState.getValue(GrillBlock.LIT)) {
             for (var i = 0; i < pBlockEntity.inventory.getSlots(); i++) {
@@ -255,22 +242,6 @@ public class GrillBlockEntity extends BlockEntity {
                 state = state.setValue(BlockStateProperties.HORIZONTAL_FACING, facing);
             }
             return state;
-        }
-    }
-
-    public static final class CampfireDataCache {
-        private static final Table<Level, BlockPos, CampfireData> CACHE = HashBasedTable.create();
-
-        public static CampfireData get(Level level, BlockPos pos) {
-            synchronized (CACHE) {
-                return CACHE.remove(level, pos);
-            }
-        }
-
-        public static void put(Level level, BlockPos pos, CampfireData data) {
-            synchronized (CACHE) {
-                CACHE.put(level, pos, data);
-            }
         }
     }
 }
