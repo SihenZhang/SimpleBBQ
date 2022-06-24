@@ -22,14 +22,16 @@ public class SimpleBBQItemModelProvider extends ItemModelProvider {
         this.blockItem(SimpleBBQRegistry.GRILL_BLOCK.get());
         this.blockItem(SimpleBBQRegistry.SKEWERING_TABLE_BLOCK.get());
 
-//        this.simpleItem(SimpleBBQRegistry.RAW_SKEWERED_BEEF_ITEM.get(), RLUtils.createRL("item/raw_skewered_beef"));
-//        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_BEEF_ITEM.get(), RLUtils.createRL("item/cooked_skewered_beef"));
-        this.simpleItem(SimpleBBQRegistry.RAW_SKEWERED_PORK_ITEM.get(), RLUtils.createRL("item/raw_skewered_pork"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_PORK_ITEM.get(), RLUtils.createRL("item/cooked_skewered_pork"));
-        this.simpleItem(SimpleBBQRegistry.RAW_SKEWERED_COD_ITEM.get(), RLUtils.createRL("item/raw_skewered_cod"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_COD_ITEM.get(), RLUtils.createRL("item/cooked_skewered_cod"));
-        this.simpleItem(SimpleBBQRegistry.RAW_SKEWERED_SALMON_ITEM.get(), RLUtils.createRL("item/raw_skewered_salmon"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_SALMON_ITEM.get(), RLUtils.createRL("item/cooked_skewered_salmon"));
+        this.simpleItem(SimpleBBQRegistry.RAW_SKEWERED_BEEF.get(), RLUtils.createRL("item/raw_skewered_beef"));
+        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_BEEF.get(), RLUtils.createRL("item/cooked_skewered_beef"));
+        this.simpleItem(SimpleBBQRegistry.RAW_SKEWERED_CHICKEN.get(), RLUtils.createRL("item/raw_skewered_chicken"));
+        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_CHICKEN.get(), RLUtils.createRL("item/cooked_skewered_chicken"));
+        this.simpleItem(SimpleBBQRegistry.RAW_SKEWERED_PORK.get(), RLUtils.createRL("item/raw_skewered_pork"));
+        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_PORK.get(), RLUtils.createRL("item/cooked_skewered_pork"));
+        this.simpleItem(SimpleBBQRegistry.RAW_SKEWERED_COD.get(), RLUtils.createRL("item/raw_skewered_cod"));
+        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_COD.get(), RLUtils.createRL("item/cooked_skewered_cod"));
+        this.simpleItem(SimpleBBQRegistry.RAW_SKEWERED_SALMON.get(), RLUtils.createRL("item/raw_skewered_salmon"));
+        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_SALMON.get(), RLUtils.createRL("item/cooked_skewered_salmon"));
     }
 
     public ItemModelBuilder blockItem(Block block) {
