@@ -3,7 +3,6 @@
   "ingredient": {
     "item": "minecraft:beef"
   },
-  "count": 1,
   "result": {
     "item": "simplebbq:raw_skewered_beef"
   }

@@ -87,10 +87,17 @@ public class SkeweringRecipe implements Recipe<Container> {
     public static class Serializer extends ForgeRegistryEntry<RecipeSerializer<?>> implements RecipeSerializer<SkeweringRecipe> {
         @Override
         public SkeweringRecipe fromJson(ResourceLocation pRecipeId, JsonObject pSerializedRecipe) {
-            var ingredient = JsonUtils.getAsIngredient(pSerializedRecipe, "ingredient");
-            var count = GsonHelper.getAsInt(pSerializedRecipe, "count", 1);
             var result = JsonUtils.getAsItemStack(pSerializedRecipe, "result");
-            return new SkeweringRecipe(pRecipeId, ingredient, count, result);
+            if (GsonHelper.isObjectNode(pSerializedRecipe, "ingredient")) {
+                var ingredientObject = GsonHelper.getAsJsonObject(pSerializedRecipe, "ingredient");
+                if (ingredientObject.has("ingredient")) {
+                    var ingredient = JsonUtils.getAsIngredient(ingredientObject, "ingredient");
+                    var count = GsonHelper.getAsInt(ingredientObject, "count", 1);
+                    return new SkeweringRecipe(pRecipeId, ingredient, count, result);
+                }
+            }
+            var ingredient = JsonUtils.getAsIngredient(pSerializedRecipe, "ingredient");
+            return new SkeweringRecipe(pRecipeId, ingredient, 1, result);
         }
 
         @Nullable

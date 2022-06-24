@@ -81,14 +81,20 @@ public class SkeweringRecipeBuilder implements RecipeBuilder {
 
         @Override
         public void serializeRecipeData(JsonObject pJson) {
-            pJson.add("ingredient", ingredient.toJson());
-            pJson.addProperty("count", ingredientCount);
-            var resultJsonObject = new JsonObject();
-            resultJsonObject.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
-            if (resultCount > 1) {
-                resultJsonObject.addProperty("count", resultCount);
+            if (ingredientCount > 1) {
+                var ingredientWithCount = new JsonObject();
+                ingredientWithCount.add("ingredient", ingredient.toJson());
+                ingredientWithCount.addProperty("count", ingredientCount);
+                pJson.add("ingredient", ingredientWithCount);
+            } else {
+                pJson.add("ingredient", ingredient.toJson());
             }
-            pJson.add("result", resultJsonObject);
+            var resultObject = new JsonObject();
+            resultObject.addProperty("item", ForgeRegistries.ITEMS.getKey(result).toString());
+            if (resultCount > 1) {
+                resultObject.addProperty("count", resultCount);
+            }
+            pJson.add("result", resultObject);
         }
 
         @Override
