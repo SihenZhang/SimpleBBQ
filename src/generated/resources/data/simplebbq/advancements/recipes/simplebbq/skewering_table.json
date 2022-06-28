@@ -1,0 +1,34 @@
+{
+  "parent": "minecraft:recipes/root",
+  "rewards": {
+    "recipes": [
+      "simplebbq:skewering_table"
+    ]
+  },
+  "criteria": {
+    "has_stone_slab": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:smooth_stone_slab"
+            ]
+          }
+        ]
+      }
+    },
+    "has_the_recipe": {
+      "trigger": "minecraft:recipe_unlocked",
+      "conditions": {
+        "recipe": "simplebbq:skewering_table"
+      }
+    }
+  },
+  "requirements": [
+    [
+      "has_stone_slab",
+      "has_the_recipe"
+    ]
+  ]
+}

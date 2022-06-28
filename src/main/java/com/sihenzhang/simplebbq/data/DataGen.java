@@ -15,6 +15,7 @@ public class DataGen {
             var blockTagsProvider = new SimpleBBQBlockTagsProvider(generator, helper);
             generator.addProvider(blockTagsProvider);
             generator.addProvider(new SimpleBBQItemTagsProvider(generator, blockTagsProvider, helper));
+            generator.addProvider(new SimpleBBQLootTableProvider(generator));
             generator.addProvider(new SimpleBBQRecipeProvider(generator));
         }
         if (event.includeClient()) {

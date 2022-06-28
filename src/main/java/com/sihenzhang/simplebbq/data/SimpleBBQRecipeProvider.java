@@ -7,9 +7,13 @@ import com.sihenzhang.simplebbq.data.recipes.SkeweringRecipeBuilder;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
+import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraftforge.common.Tags;
 
 import java.util.function.Consumer;
 
@@ -20,6 +24,25 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
 
     @Override
     protected void buildCraftingRecipes(Consumer<FinishedRecipe> pFinishedRecipeConsumer) {
+        // crafting recipe
+        ShapedRecipeBuilder.shaped(SimpleBBQRegistry.GRILL_BLOCK.get())
+                .define('#', Blocks.IRON_TRAPDOOR)
+                .define('X', Tags.Items.INGOTS_IRON)
+                .define('I', Tags.Items.RODS_WOODEN)
+                .pattern("X#X")
+                .pattern("I I")
+                .pattern("I I")
+                .unlockedBy("has_iron_ingot", has(Items.IRON_INGOT))
+                .save(pFinishedRecipeConsumer);
+        ShapedRecipeBuilder.shaped(SimpleBBQRegistry.SKEWERING_TABLE_BLOCK.get())
+                .define('#', ItemTags.PLANKS)
+                .define('_', Blocks.SMOOTH_STONE_SLAB)
+                .pattern("__")
+                .pattern("##")
+                .pattern("##")
+                .unlockedBy("has_stone_slab", has(Blocks.SMOOTH_STONE_SLAB))
+                .save(pFinishedRecipeConsumer);
+
         // vanilla cooking recipe
         grillCookingRecipe(pFinishedRecipeConsumer, Items.BEEF, Items.COOKED_BEEF, 400);
         grillCookingRecipe(pFinishedRecipeConsumer, Items.CHICKEN, Items.COOKED_CHICKEN, 400);
