@@ -66,7 +66,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public GrillBlock() {
-        super(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.METAL).lightLevel(state -> state.getValue(LIT) ? 15 : 0).noOcclusion());
+        super(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.LANTERN).lightLevel(state -> state.getValue(LIT) ? 15 : 0).noOcclusion());
         this.registerDefaultState(stateDefinition.any().setValue(LIT, false).setValue(WATERLOGGED, false).setValue(FACING, Direction.NORTH));
     }
 
@@ -138,7 +138,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
                 var block = grillBlockEntity.getCampfireData().toBlockState().getBlock();
                 if (block instanceof CampfireBlock campfireBlock) {
-                    var campfireDamage = (Integer) ObfuscationReflectionHelper.getPrivateValue(CampfireBlock.class, campfireBlock, "fireDamage");
+                    var campfireDamage = (Integer) ObfuscationReflectionHelper.getPrivateValue(CampfireBlock.class, campfireBlock, "f_51233_");
                     if (campfireDamage != null) {
                         damage = campfireDamage.floatValue();
                     }
