@@ -43,10 +43,10 @@ import net.minecraft.world.phys.shapes.BooleanOp;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.fml.util.ObfuscationReflectionHelper;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 
 import javax.annotation.Nullable;
+import java.util.Random;
 
 public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     protected static final VoxelShape OUTLINE_SHAPE = Shapes.or(
@@ -138,10 +138,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
                 var block = grillBlockEntity.getCampfireData().toBlockState().getBlock();
                 if (block instanceof CampfireBlock campfireBlock) {
-                    var campfireDamage = (Integer) ObfuscationReflectionHelper.getPrivateValue(CampfireBlock.class, campfireBlock, "f_51233_");
-                    if (campfireDamage != null) {
-                        damage = campfireDamage.floatValue();
-                    }
+                    damage = (float) campfireBlock.fireDamage;
                 }
             }
             pEntity.hurt(DamageSource.HOT_FLOOR, damage);
@@ -208,6 +205,21 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @SuppressWarnings("deprecation")
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
+    }
+
+    @Override
+    public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, Random pRandom) {
+        if (pState.getValue(LIT)) {
+            if (pRandom.nextInt(10) == 0) {
+                pLevel.playLocalSound((double) pPos.getX() + 0.5D, (double) pPos.getY() + 0.5D, (double) pPos.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + pRandom.nextFloat(), pRandom.nextFloat() * 0.7F + 0.6F, false);
+            }
+
+//            if (this.spawnParticles && pRand.nextInt(5) == 0) {
+//                for(int i = 0; i < pRand.nextInt(1) + 1; ++i) {
+//                    pLevel.addParticle(ParticleTypes.LAVA, (double)pPos.getX() + 0.5D, (double)pPos.getY() + 0.5D, (double)pPos.getZ() + 0.5D, (double)(pRand.nextFloat() / 2.0F), 5.0E-5D, (double)(pRand.nextFloat() / 2.0F));
+//                }
+//            }
+        }
     }
 
     public static void dowse(@Nullable Entity pEntity, LevelAccessor pLevel, BlockPos pPos, BlockState pState) {

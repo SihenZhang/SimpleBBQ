@@ -21,7 +21,6 @@ import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,7 +28,7 @@ import javax.annotation.Nullable;
 public class SkeweringTableBlockEntity extends BlockEntity {
     private final ItemStackHandler inventory = new ItemStackHandler(1) {
         @Override
-        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+        public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
             return level.getRecipeManager().getRecipeFor(SimpleBBQRegistry.SKEWERING_RECIPE_TYPE.get(), new SimpleContainer(stack), level).isPresent();
         }
 
