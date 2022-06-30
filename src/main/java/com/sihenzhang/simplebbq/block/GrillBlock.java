@@ -153,6 +153,21 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             var blockEntity = pLevel.getBlockEntity(pPos);
             if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
                 Containers.dropContents(pLevel, pPos, new RecipeWrapper(grillBlockEntity.getInventory()));
+                var campfireState = grillBlockEntity.getCampfireData().toBlockState();
+                if (isCampfire(campfireState)) {
+                    if (pNewState.isAir() || pNewState.getFluidState().getType() == Fluids.WATER) {
+                        if (campfireState.hasProperty(BlockStateProperties.SIGNAL_FIRE)) {
+                            campfireState = campfireState.setValue(BlockStateProperties.SIGNAL_FIRE, pLevel.getBlockState(pPos.below()).is(Blocks.HAY_BLOCK));
+                        }
+                        if (campfireState.hasProperty(BlockStateProperties.WATERLOGGED)) {
+                            campfireState = campfireState.setValue(BlockStateProperties.WATERLOGGED, pNewState.getFluidState().getType() == Fluids.WATER);
+                        }
+                        pNewState = campfireState;
+                        pLevel.setBlockAndUpdate(pPos, pNewState);
+                    } else {
+                        popResource(pLevel, pPos, campfireState.getBlock().asItem().getDefaultInstance());
+                    }
+                }
             }
             super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
         }
