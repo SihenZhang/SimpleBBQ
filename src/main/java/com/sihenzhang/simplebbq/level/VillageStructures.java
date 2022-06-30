@@ -46,14 +46,16 @@ public class VillageStructures {
         var templatePools = event.getServer().registryAccess().registry(Registry.TEMPLATE_POOL_REGISTRY).get();
         var processorLists = event.getServer().registryAccess().registry(Registry.PROCESSOR_LIST_REGISTRY).get();
 
-//        VillageStructures.addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/plains/houses"), RLUtils.createRL("village/houses/plains_bbq_camp").toString(), 5);
-//        VillageStructures.addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/snowy/houses"), RLUtils.createRL("village/houses/snowy_bbq_camp").toString(), 3);
-//        VillageStructures.addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/savanna/houses"), RLUtils.createRL("village/houses/savanna_bbq_camp").toString(), 4);
-//        VillageStructures.addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/desert/houses"), RLUtils.createRL("village/houses/desert_bbq_camp").toString(), 3);
-        VillageStructures.addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/taiga/houses"), RLUtils.createRL("village/houses/taiga_bbq_camp").toString(), 2);
+        addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/plains/houses"), RLUtils.createRL("village/houses/plains_bbq_camp_1"), 1);
+        addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/plains/houses"), RLUtils.createRL("village/houses/plains_bbq_camp_2"), 1);
+        addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/savanna/houses"), RLUtils.createRL("village/houses/savanna_bbq_camp_1"), 2);
+        addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/desert/houses"), RLUtils.createRL("village/houses/desert_bbq_camp_1"), 2);
+        addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/taiga/houses"), RLUtils.createRL("village/houses/taiga_bbq_camp_1"), 2);
+        addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/snowy/houses"), RLUtils.createRL("village/houses/snowy_bbq_camp_1"), 3);
+        addBuildingToPool(templatePools, processorLists, RLUtils.createVanillaRL("village/snowy/houses"), RLUtils.createRL("village/houses/snowy_bbq_camp_2"), 1);
     }
 
-    public static void addBuildingToPool(Registry<StructureTemplatePool> templatePoolRegistry, Registry<StructureProcessorList> processorListRegistry, ResourceLocation poolRL, String nbtPieceRL, int weight) {
+    public static void addBuildingToPool(Registry<StructureTemplatePool> templatePoolRegistry, Registry<StructureProcessorList> processorListRegistry, ResourceLocation poolRL, ResourceLocation nbtPieceRL, int weight) {
         var pool = templatePoolRegistry.get(poolRL);
         if (pool == null) {
             return;
@@ -62,7 +64,7 @@ public class VillageStructures {
         var emptyProcessor = RLUtils.createVanillaRL("empty");
         var processorHolder = processorListRegistry.getHolderOrThrow(ResourceKey.create(Registry.PROCESSOR_LIST_REGISTRY, emptyProcessor));
 
-        var piece = SinglePoolElement.single(nbtPieceRL, processorHolder).apply(StructureTemplatePool.Projection.RIGID);
+        var piece = SinglePoolElement.single(nbtPieceRL.toString(), processorHolder).apply(StructureTemplatePool.Projection.RIGID);
 
         pool.rawTemplates = Util.make(new ArrayList<>(pool.rawTemplates), newRawTemplates -> newRawTemplates.add(Pair.of(piece, weight)));
 
