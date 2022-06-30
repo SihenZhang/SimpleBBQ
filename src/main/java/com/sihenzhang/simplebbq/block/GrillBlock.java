@@ -101,7 +101,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                     if (!pPlayer.getAbilities().instabuild) {
                         stackInHand.shrink(1);
                     }
-                    return InteractionResult.sidedSuccess(pLevel.isClientSide);
+                    return InteractionResult.sidedSuccess(pLevel.isClientSide());
                 }
             }
 
@@ -114,14 +114,14 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                     dowse(pPlayer, pLevel, pPos, pState);
                     pLevel.setBlockAndUpdate(pPos, pState.setValue(LIT, false));
                     stackInHand.hurtAndBreak(1, pPlayer, player -> player.broadcastBreakEvent(pHand));
-                    return InteractionResult.sidedSuccess(pLevel.isClientSide);
+                    return InteractionResult.sidedSuccess(pLevel.isClientSide());
                 }
             }
 
             // try to cook
             var optionalRecipe = grillBlockEntity.getCookableRecipe(stackInHand);
             if (optionalRecipe.isPresent()) {
-                if (!pLevel.isClientSide && grillBlockEntity.placeFood(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, optionalRecipe.get().getCookingTime())) {
+                if (!pLevel.isClientSide() && grillBlockEntity.placeFood(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, optionalRecipe.get().getCookingTime())) {
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.CONSUME;
@@ -165,7 +165,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                         pNewState = campfireState;
                         pLevel.setBlockAndUpdate(pPos, pNewState);
                     } else {
-                        popResource(pLevel, pPos, campfireState.getBlock().asItem().getDefaultInstance());
+                        Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), campfireState.getBlock().asItem().getDefaultInstance());
                     }
                 }
             }
@@ -276,7 +276,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         var blockEntity = pLevel.getBlockEntity(pos);
         if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
             var campfireData = grillBlockEntity.getCampfireData();
-            if (!pLevel.isClientSide && pProjectile.isOnFire() && pProjectile.mayInteract(pLevel, pos) && !pState.getValue(WATERLOGGED) && isCampfire(campfireData.toBlockState()) && !campfireData.lit) {
+            if (!pLevel.isClientSide() && pProjectile.isOnFire() && pProjectile.mayInteract(pLevel, pos) && !pState.getValue(WATERLOGGED) && isCampfire(campfireData.toBlockState()) && !campfireData.lit) {
                 var newCampfireData = campfireData.copy();
                 newCampfireData.lit = true;
                 grillBlockEntity.setCampfireData(newCampfireData);
@@ -317,7 +317,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return pLevel.isClientSide ? null : createTickerHelper(pBlockEntityType, SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), GrillBlockEntity::serverTick);
+        return pLevel.isClientSide() ? null : createTickerHelper(pBlockEntityType, SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), GrillBlockEntity::serverTick);
     }
 
     @Override

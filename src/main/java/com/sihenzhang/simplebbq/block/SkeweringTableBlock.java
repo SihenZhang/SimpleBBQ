@@ -36,14 +36,26 @@ public class SkeweringTableBlock extends BaseEntityBlock {
         var blockEntity = pLevel.getBlockEntity(pPos);
         if (blockEntity instanceof SkeweringTableBlockEntity skeweringTableBlockEntity) {
             var stackInHand = pPlayer.getItemInHand(pHand);
-            if (stackInHand.is(SimpleBBQItemTags.SKEWER)) {
-                if (!pLevel.isClientSide && skeweringTableBlockEntity.skewer(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, pPlayer)) {
+
+            // try to remove
+            if (stackInHand.isEmpty()) {
+                if (!pLevel.isClientSide() && skeweringTableBlockEntity.removeFood(pPlayer, pHand)) {
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.CONSUME;
             }
+
+            // try to skewer
+            if (stackInHand.is(SimpleBBQItemTags.SKEWER)) {
+                if (!pLevel.isClientSide() && skeweringTableBlockEntity.skewer(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, pPlayer)) {
+                    return InteractionResult.SUCCESS;
+                }
+                return InteractionResult.CONSUME;
+            }
+
+            // try to place
             if (skeweringTableBlockEntity.canBeSkewered(stackInHand)) {
-                if (!pLevel.isClientSide() && skeweringTableBlockEntity.placeFood(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, pPlayer, pHand)) {
+                if (!pLevel.isClientSide() && skeweringTableBlockEntity.placeFood(pPlayer, pHand)) {
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.CONSUME;

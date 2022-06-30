@@ -77,12 +77,31 @@ public class SkeweringTableBlockEntity extends BlockEntity {
         return level.getRecipeManager().getRecipeFor(SimpleBBQRegistry.SKEWERING_RECIPE_TYPE.get(), new SimpleContainer(stack), level).isPresent();
     }
 
-    public boolean placeFood(ItemStack stack, Player player, InteractionHand hand) {
-        var remainStack = inventory.insertItem(0, stack, false);
-        if (remainStack == stack) {
+    public boolean placeFood(Player player, InteractionHand hand) {
+        var stackInHand = player.getItemInHand(hand);
+        if (stackInHand.isEmpty()) {
             return false;
         }
-        player.setItemInHand(hand, remainStack);
+        var remainStack = inventory.insertItem(0, player.getAbilities().instabuild ? stackInHand.copy() : stackInHand, false);
+        if (remainStack.getCount() == stackInHand.getCount()) {
+            return false;
+        }
+        if (!player.getAbilities().instabuild) {
+            player.setItemInHand(hand, remainStack);
+        }
+        return true;
+    }
+
+    public boolean removeFood(Player player, InteractionHand hand) {
+        if (!player.getItemInHand(hand).isEmpty()) {
+            return false;
+        }
+        var stackInInventory = inventory.getStackInSlot(0);
+        if (stackInInventory.isEmpty()) {
+            return false;
+        }
+        inventory.setStackInSlot(0, ItemStack.EMPTY);
+        player.setItemInHand(hand, stackInInventory);
         return true;
     }
 
