@@ -65,6 +65,11 @@ public class SkeweringRecipe implements Recipe<Container> {
     }
 
     @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
+    @Override
     public ItemStack getToastSymbol() {
         return SimpleBBQRegistry.SKEWERING_TABLE_BLOCK_ITEM.get().getDefaultInstance();
     }

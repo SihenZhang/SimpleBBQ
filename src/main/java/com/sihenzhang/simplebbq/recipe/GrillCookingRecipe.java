@@ -20,6 +20,11 @@ public class GrillCookingRecipe extends AbstractCookingRecipe {
     }
 
     @Override
+    public boolean isSpecial() {
+        return true;
+    }
+
+    @Override
     public ItemStack getToastSymbol() {
         return SimpleBBQRegistry.GRILL_BLOCK_ITEM.get().getDefaultInstance();
     }
