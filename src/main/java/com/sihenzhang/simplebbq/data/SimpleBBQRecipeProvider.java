@@ -4,6 +4,7 @@ import com.sihenzhang.simplebbq.SimpleBBQ;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.data.recipes.GrillCookingRecipeBuilder;
 import com.sihenzhang.simplebbq.data.recipes.SkeweringRecipeBuilder;
+import com.sun.jna.platform.win32.LMAccess;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -57,16 +58,22 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
         // skewering recipe
         skeweringRecipe(pFinishedRecipeConsumer, Items.BEEF, SimpleBBQRegistry.RAW_SKEWERED_BEEF.get());
         skeweringRecipe(pFinishedRecipeConsumer, Items.CHICKEN, SimpleBBQRegistry.RAW_SKEWERED_CHICKEN.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.MUTTON, SimpleBBQRegistry.RAW_SKEWERED_MUTTON.get());
         skeweringRecipe(pFinishedRecipeConsumer, Items.PORKCHOP, SimpleBBQRegistry.RAW_SKEWERED_PORK.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.RABBIT, SimpleBBQRegistry.RAW_SKEWERED_RABBIT.get());
         skeweringRecipe(pFinishedRecipeConsumer, Items.COD, SimpleBBQRegistry.RAW_SKEWERED_COD.get());
         skeweringRecipe(pFinishedRecipeConsumer, Items.SALMON, SimpleBBQRegistry.RAW_SKEWERED_SALMON.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.POTATO, SimpleBBQRegistry.SKEWERED_POTATO.get());
 
         // skewer cooking recipe
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_BEEF.get(), SimpleBBQRegistry.COOKED_SKEWERED_BEEF.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_CHICKEN.get(), SimpleBBQRegistry.COOKED_SKEWERED_CHICKEN.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_MUTTON.get(), SimpleBBQRegistry.COOKED_SKEWERED_MUTTON.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_PORK.get(), SimpleBBQRegistry.COOKED_SKEWERED_PORK.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_RABBIT.get(), SimpleBBQRegistry.COOKED_SKEWERED_RABBIT.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_COD.get(), SimpleBBQRegistry.COOKED_SKEWERED_COD.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_SALMON.get(), SimpleBBQRegistry.COOKED_SKEWERED_SALMON.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SKEWERED_POTATO.get(), SimpleBBQRegistry.BAKED_SKEWERED_POTATO.get(), 400);
     }
 
     protected static void grillCookingRecipe(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pIngredient, ItemLike pResult, int pCookingTime) {

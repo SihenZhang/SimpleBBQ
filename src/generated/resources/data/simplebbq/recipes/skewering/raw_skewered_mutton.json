@@ -1,0 +1,9 @@
+{
+  "type": "simplebbq:skewering",
+  "ingredient": {
+    "item": "minecraft:mutton"
+  },
+  "result": {
+    "item": "simplebbq:raw_skewered_mutton"
+  }
+}
