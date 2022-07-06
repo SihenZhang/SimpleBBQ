@@ -1,5 +1,6 @@
 package com.sihenzhang.simplebbq;
 
+import com.google.common.collect.ImmutableSet;
 import com.sihenzhang.simplebbq.block.GrillBlock;
 import com.sihenzhang.simplebbq.block.SkeweringTableBlock;
 import com.sihenzhang.simplebbq.block.entity.GrillBlockEntity;
@@ -9,6 +10,8 @@ import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
 import com.sihenzhang.simplebbq.recipe.SimpleBBQRecipeType;
 import com.sihenzhang.simplebbq.recipe.SkeweringRecipe;
 import net.minecraft.core.Registry;
+import net.minecraft.world.entity.ai.village.poi.PoiType;
+import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -23,6 +26,8 @@ public final class SimpleBBQRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SimpleBBQ.MOD_ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SimpleBBQ.MOD_ID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, SimpleBBQ.MOD_ID);
+    public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(ForgeRegistries.POI_TYPES, SimpleBBQ.MOD_ID);
+    public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, SimpleBBQ.MOD_ID);
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, SimpleBBQ.MOD_ID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, SimpleBBQ.MOD_ID);
 
@@ -37,6 +42,9 @@ public final class SimpleBBQRegistry {
     public static final RegistryObject<Block> SKEWERING_TABLE_BLOCK = BLOCKS.register("skewering_table", SkeweringTableBlock::new);
     public static final RegistryObject<Item> SKEWERING_TABLE_BLOCK_ITEM = ITEMS.register("skewering_table", () -> new BlockItem(SKEWERING_TABLE_BLOCK.get(), new Item.Properties().tab(SimpleBBQ.TAB)));
     public static final RegistryObject<BlockEntityType<SkeweringTableBlockEntity>> SKEWERING_TABLE_BLOCK_ENTITY = BLOCK_ENTITIES.register("skewering_table", () -> BlockEntityType.Builder.of(SkeweringTableBlockEntity::new, SKEWERING_TABLE_BLOCK.get()).build(null));
+
+    public static final RegistryObject<PoiType> SKEWERMAN_POI = POI_TYPES.register("skewerman", () -> new PoiType("skewerman", PoiType.getBlockStates(SKEWERING_TABLE_BLOCK.get()), 1, 1));
+    public static final RegistryObject<VillagerProfession> SKEWERMAN = PROFESSIONS.register("skewerman", () -> new VillagerProfession("skewerman", SKEWERMAN_POI.get(), ImmutableSet.of(), ImmutableSet.of(), null));
 
     public static final RegistryObject<Item> RAW_SKEWERED_BEEF = ITEMS.register("raw_skewered_beef", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
     public static final RegistryObject<Item> COOKED_SKEWERED_BEEF = ITEMS.register("cooked_skewered_beef", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));

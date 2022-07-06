@@ -4,7 +4,6 @@ import com.sihenzhang.simplebbq.SimpleBBQ;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.data.recipes.GrillCookingRecipeBuilder;
 import com.sihenzhang.simplebbq.data.recipes.SkeweringRecipeBuilder;
-import com.sun.jna.platform.win32.LMAccess;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
