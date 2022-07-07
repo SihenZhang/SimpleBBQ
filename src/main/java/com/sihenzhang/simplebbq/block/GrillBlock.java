@@ -1,9 +1,13 @@
 package com.sihenzhang.simplebbq.block;
 
+import com.google.common.base.Suppliers;
+import com.google.common.collect.ImmutableSet;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.entity.GrillBlockEntity;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -15,9 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.world.item.FireChargeItem;
-import net.minecraft.world.item.FlintAndSteelItem;
-import net.minecraft.world.item.ShovelItem;
+import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
@@ -39,14 +41,14 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.BooleanOp;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.world.phys.shapes.*;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
 import java.util.Random;
+import java.util.Set;
+import java.util.function.Supplier;
 
 public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
     protected static final VoxelShape OUTLINE_SHAPE = Shapes.or(
@@ -61,6 +63,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             Block.box(1.0D, 15.5D, 1.0D, 15.0D, 16.0D, 15.0D),
             BooleanOp.ONLY_FIRST
     );
+    protected static final Supplier<Set<Item>> CAMPFIRE_ITEMS = Suppliers.memoize(() -> ForgeRegistries.ITEMS.getValues().stream().filter(item -> isCampfire(item.getDefaultInstance())).collect(ImmutableSet.toImmutableSet()));
     public static final BooleanProperty LIT = BlockStateProperties.LIT;
     public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
@@ -77,6 +80,25 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
             var stackInHand = pPlayer.getItemInHand(pHand);
             var campfireData = grillBlockEntity.getCampfireData();
+
+            // try to place the campfire
+            if (campfireData.toBlockState().isAir() && isCampfire(stackInHand)) {
+                // TODO: set campfire state with stack nbt
+                var campfireState = ((BlockItem) stackInHand.getItem()).getBlock().getStateForPlacement(new BlockPlaceContext(pLevel, pPlayer, pHand, stackInHand, pHit));
+                var newCampfireData = new GrillBlockEntity.CampfireData(campfireState);
+                grillBlockEntity.setCampfireData(newCampfireData);
+                pLevel.setBlockAndUpdate(pPos, pState.setValue(LIT, campfireData.lit));
+                if (pPlayer instanceof ServerPlayer serverPlayer) {
+                    CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, pPos, stackInHand);
+                }
+                pLevel.gameEvent(pPlayer, GameEvent.BLOCK_PLACE, pPos);
+                var campfireSoundType = campfireState.getSoundType(pLevel, pPos, pPlayer);
+                pLevel.playSound(pPlayer, pPos, campfireSoundType.getPlaceSound(), SoundSource.BLOCKS, (campfireSoundType.getVolume() + 1.0F) / 2.0F, campfireSoundType.getPitch() * 0.8F);
+                if (!pPlayer.getAbilities().instabuild) {
+                    stackInHand.shrink(1);
+                }
+                return InteractionResult.sidedSuccess(pLevel.isClientSide());
+            }
 
             // try to light the grill
             if (pState.hasProperty(LIT) && !pState.getValue(LIT) && pState.hasProperty(WATERLOGGED) && !pState.getValue(WATERLOGGED) && isCampfire(campfireData.toBlockState()) && !campfireData.lit) {
@@ -106,16 +128,14 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             }
 
             // try to dowse the grill
-            if (pState.hasProperty(LIT) && pState.getValue(LIT) && isCampfire(campfireData.toBlockState()) && campfireData.lit) {
-                if (stackInHand.getItem() instanceof ShovelItem) {
-                    if (!pLevel.isClientSide()) {
-                        pLevel.levelEvent(null, 1009, pPos, 0);
-                    }
-                    dowse(pPlayer, pLevel, pPos, pState);
-                    pLevel.setBlockAndUpdate(pPos, pState.setValue(LIT, false));
-                    stackInHand.hurtAndBreak(1, pPlayer, player -> player.broadcastBreakEvent(pHand));
-                    return InteractionResult.sidedSuccess(pLevel.isClientSide());
+            if (pState.hasProperty(LIT) && pState.getValue(LIT) && isCampfire(campfireData.toBlockState()) && campfireData.lit && stackInHand.getItem() instanceof ShovelItem) {
+                if (!pLevel.isClientSide()) {
+                    pLevel.levelEvent(null, 1009, pPos, 0);
                 }
+                dowse(pPlayer, pLevel, pPos, pState);
+                pLevel.setBlockAndUpdate(pPos, pState.setValue(LIT, false));
+                stackInHand.hurtAndBreak(1, pPlayer, player -> player.broadcastBreakEvent(pHand));
+                return InteractionResult.sidedSuccess(pLevel.isClientSide());
             }
 
             // try to cook
@@ -197,13 +217,24 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @Override
     @SuppressWarnings("deprecation")
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
+        if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity && grillBlockEntity.getCampfireData().toBlockState().isAir()) {
+            if (pContext instanceof EntityCollisionContext entityCollisionContext) {
+                if (isCampfire(entityCollisionContext.heldItem)) {
+                    return Shapes.block();
+                }
+            } else {
+                // this code block will not be invoked in theory, keep it just in case
+                if (CAMPFIRE_ITEMS.get().stream().anyMatch(pContext::isHoldingItem)) {
+                    return Shapes.block();
+                }
+            }
+        }
         return this.getShapeWithCampfire(OUTLINE_SHAPE, pState, pLevel, pPos, pContext);
     }
 
     @SuppressWarnings("deprecation")
     private VoxelShape getShapeWithCampfire(VoxelShape pBaseShape, BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        var blockEntity = pLevel.getBlockEntity(pPos);
-        if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
+        if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
             var campfireState = grillBlockEntity.getCampfireData().toBlockState();
             if (isCampfire(campfireState)) {
                 return Shapes.or(pBaseShape, campfireState.getBlock().getShape(pState, pLevel, pPos, pContext));
@@ -212,8 +243,24 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         return pBaseShape;
     }
 
+    @Override
+    @SuppressWarnings("deprecation")
+    public VoxelShape getInteractionShape(BlockState pState, BlockGetter pLevel, BlockPos pPos) {
+        return COLLISION_SHAPE;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
+        return !pUseContext.isSecondaryUseActive() && isCampfire(pUseContext.getItemInHand()) || super.canBeReplaced(pState, pUseContext);
+    }
+
     public static boolean isCampfire(BlockState pState) {
         return pState.is(BlockTags.CAMPFIRES) && pState.hasProperty(BlockStateProperties.LIT);
+    }
+
+    public static boolean isCampfire(ItemStack pStack) {
+        return pStack.getItem() instanceof BlockItem blockItem && isCampfire(blockItem.getBlock().defaultBlockState());
     }
 
     @Override

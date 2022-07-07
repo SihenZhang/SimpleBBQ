@@ -77,6 +77,10 @@ public class GrillBlockEntity extends BlockEntity {
         var hasChanged = false;
 
         // sync the campfire state
+        if (pState.hasProperty(GrillBlock.WATERLOGGED) && pState.getValue(GrillBlock.WATERLOGGED) && pBlockEntity.campfireData.lit) {
+            pBlockEntity.campfireData.lit = false;
+            hasChanged = true;
+        }
         if (pState.hasProperty(GrillBlock.LIT) && pState.getValue(GrillBlock.LIT) != pBlockEntity.campfireData.lit) {
             pState = pState.setValue(GrillBlock.LIT, pBlockEntity.campfireData.lit);
             pLevel.setBlockAndUpdate(pPos, pState);
