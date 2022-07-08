@@ -267,7 +267,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
-    public static HitResult getPlayerHitResult(Player pPlayer) {
+    private static HitResult getPlayerHitResult(Player pPlayer) {
         var pickRange = 6.0D;
         var reachDistanceAttribute = pPlayer.getAttribute(ForgeMod.REACH_DISTANCE.get());
         if (reachDistanceAttribute != null) {
@@ -277,7 +277,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         return pPlayer.pick(pickRange, 1.0F, false);
     }
 
-    public static boolean isHittingGrill(BlockHitResult pHit) {
+    private static boolean isHittingGrill(BlockHitResult pHit) {
         var clickLocation = pHit.getLocation();
         var clickBlockPos = pHit.getBlockPos();
         var clickRelativeX = clickLocation.x - (double) clickBlockPos.getX();
@@ -414,22 +414,6 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             return true;
         } else {
             return false;
-        }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void onProjectileHit(Level pLevel, BlockState pState, BlockHitResult pHit, Projectile pProjectile) {
-        var pos = pHit.getBlockPos();
-        var blockEntity = pLevel.getBlockEntity(pos);
-        if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
-            var campfireData = grillBlockEntity.getCampfireData();
-            if (!pLevel.isClientSide() && pProjectile.isOnFire() && pProjectile.mayInteract(pLevel, pos) && !pState.getValue(WATERLOGGED) && isCampfire(campfireData.toBlockState()) && !campfireData.lit) {
-                var newCampfireData = campfireData.copy();
-                newCampfireData.lit = true;
-                grillBlockEntity.setCampfireData(newCampfireData);
-                pLevel.setBlockAndUpdate(pos, pState.setValue(LIT, true));
-            }
         }
     }
 
