@@ -41,7 +41,9 @@ import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.shapes.*;
+import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -76,8 +78,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        var blockEntity = pLevel.getBlockEntity(pPos);
-        if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
+        if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
             var stackInHand = pPlayer.getItemInHand(pHand);
             var campfireData = grillBlockEntity.getCampfireData();
 
@@ -87,7 +88,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                 var campfireState = ((BlockItem) stackInHand.getItem()).getBlock().getStateForPlacement(new BlockPlaceContext(pLevel, pPlayer, pHand, stackInHand, pHit));
                 var newCampfireData = new GrillBlockEntity.CampfireData(campfireState);
                 grillBlockEntity.setCampfireData(newCampfireData);
-                pLevel.setBlockAndUpdate(pPos, pState.setValue(LIT, campfireData.lit));
+                pLevel.setBlockAndUpdate(pPos, pState.setValue(LIT, newCampfireData.lit));
                 if (pPlayer instanceof ServerPlayer serverPlayer) {
                     CriteriaTriggers.PLACED_BLOCK.trigger(serverPlayer, pPos, stackInHand);
                 }
@@ -113,8 +114,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                     return InteractionResult.sidedSuccess(pLevel.isClientSide());
                 }
                 if (stackInHand.getItem() instanceof FireChargeItem) {
-                    var random = pLevel.getRandom();
-                    pLevel.playSound(null, pPos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
+                    pLevel.playSound(pPlayer, pPos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, pLevel.getRandom().nextFloat() * 0.4F + 0.8F);
                     var newCampfireData = campfireData.copy();
                     newCampfireData.lit = true;
                     grillBlockEntity.setCampfireData(newCampfireData);
@@ -170,27 +170,123 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @SuppressWarnings("deprecation")
     public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
         if (!pState.is(pNewState.getBlock())) {
-            var blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
+            if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
                 Containers.dropContents(pLevel, pPos, new RecipeWrapper(grillBlockEntity.getInventory()));
-                var campfireState = grillBlockEntity.getCampfireData().toBlockState();
-                if (isCampfire(campfireState)) {
-                    if (pNewState.isAir() || pNewState.getFluidState().getType() == Fluids.WATER) {
-                        if (campfireState.hasProperty(BlockStateProperties.SIGNAL_FIRE)) {
-                            campfireState = campfireState.setValue(BlockStateProperties.SIGNAL_FIRE, pLevel.getBlockState(pPos.below()).is(Blocks.HAY_BLOCK));
-                        }
-                        if (campfireState.hasProperty(BlockStateProperties.WATERLOGGED)) {
-                            campfireState = campfireState.setValue(BlockStateProperties.WATERLOGGED, pNewState.getFluidState().getType() == Fluids.WATER);
-                        }
-                        pNewState = campfireState;
-                        pLevel.setBlockAndUpdate(pPos, pNewState);
-                    } else {
-                        Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), campfireState.getBlock().asItem().getDefaultInstance());
-                    }
-                }
             }
             super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
         }
+    }
+
+    @Override
+    public boolean canHarvestBlock(BlockState state, BlockGetter level, BlockPos pos, Player player) {
+        if (level.getBlockEntity(pos) instanceof GrillBlockEntity grillBlockEntity) {
+            var campfireState = grillBlockEntity.getCampfireData().toBlockState();
+            if (isCampfire(campfireState)) {
+                var hitResult = getPlayerHitResult(player);
+                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                    var blockHitResult = (BlockHitResult) hitResult;
+                    if (!isHittingGrill(blockHitResult)) {
+                        return campfireState.getBlock().canHarvestBlock(campfireState, level, pos, player);
+                    }
+                }
+            }
+        }
+        return super.canHarvestBlock(state, level, pos, player);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public float getDestroyProgress(BlockState pState, Player pPlayer, BlockGetter pLevel, BlockPos pPos) {
+        if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
+            var campfireState = grillBlockEntity.getCampfireData().toBlockState();
+            if (isCampfire(campfireState)) {
+                var hitResult = getPlayerHitResult(pPlayer);
+                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                    var blockHitResult = (BlockHitResult) hitResult;
+                    if (!isHittingGrill(blockHitResult)) {
+                        return campfireState.getBlock().getDestroyProgress(campfireState, pPlayer, pLevel, pPos);
+                    }
+                }
+            }
+        }
+        return super.getDestroyProgress(pState, pPlayer, pLevel, pPos);
+    }
+
+    @Override
+    public void playerWillDestroy(Level pLevel, BlockPos pPos, BlockState pState, Player pPlayer) {
+        if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
+            var campfireState = grillBlockEntity.getCampfireData().toBlockState();
+            if (isCampfire(campfireState)) {
+                var hitResult = getPlayerHitResult(pPlayer);
+                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                    var blockHitResult = (BlockHitResult) hitResult;
+                    if (!isHittingGrill(blockHitResult)) {
+                        campfireState.getBlock().playerWillDestroy(pLevel, pPos, campfireState, pPlayer);
+                        return;
+                    }
+                }
+            }
+        }
+        super.playerWillDestroy(pLevel, pPos, pState, pPlayer);
+    }
+
+    @Override
+    public boolean onDestroyedByPlayer(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid) {
+        if (level.getBlockEntity(pos) instanceof GrillBlockEntity grillBlockEntity) {
+            var campfireState = grillBlockEntity.getCampfireData().toBlockState();
+            if (isCampfire(campfireState)) {
+                var hitResult = getPlayerHitResult(player);
+                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                    var blockHitResult = (BlockHitResult) hitResult;
+                    this.playerWillDestroy(level, pos, state, player);
+                    if (isHittingGrill(blockHitResult)) {
+                        level.removeBlock(pos, false);
+                        var campfireStateForPlacement = campfireState.getBlock().getStateForPlacement(new BlockPlaceContext(level, player, InteractionHand.MAIN_HAND, player.getMainHandItem(), blockHitResult));
+                        // copy properties to the campfire state for placement
+                        if (campfireState.hasProperty(BlockStateProperties.LIT) && campfireStateForPlacement.hasProperty(BlockStateProperties.LIT)) {
+                            campfireStateForPlacement = campfireStateForPlacement.setValue(BlockStateProperties.LIT, campfireState.getValue(BlockStateProperties.LIT));
+                        }
+                        if (campfireStateForPlacement.hasProperty(BlockStateProperties.WATERLOGGED) && campfireStateForPlacement.getValue(BlockStateProperties.WATERLOGGED) && campfireStateForPlacement.hasProperty(BlockStateProperties.LIT)) {
+                            campfireStateForPlacement = campfireStateForPlacement.setValue(BlockStateProperties.LIT, false);
+                        }
+                        if (campfireState.hasProperty(BlockStateProperties.HORIZONTAL_FACING) && campfireStateForPlacement.hasProperty(BlockStateProperties.HORIZONTAL_FACING)) {
+                            campfireStateForPlacement = campfireStateForPlacement.setValue(BlockStateProperties.HORIZONTAL_FACING, campfireState.getValue(BlockStateProperties.HORIZONTAL_FACING));
+                        }
+                        return level.setBlock(pos, campfireStateForPlacement, level.isClientSide() ? Block.UPDATE_ALL_IMMEDIATE : Block.UPDATE_ALL);
+                    } else {
+                        grillBlockEntity.setCampfireData(new GrillBlockEntity.CampfireData());
+                        level.setBlock(pos, state.setValue(LIT, false), level.isClientSide() ? Block.UPDATE_ALL_IMMEDIATE : Block.UPDATE_ALL);
+                        if (!player.isCreative() && campfireState.getBlock().canHarvestBlock(campfireState, level, pos, player)) {
+                            campfireState.getBlock().playerDestroy(level, player, pos, campfireState, null, player.getMainHandItem().copy());
+                        }
+                        return false;
+                    }
+                }
+            }
+        }
+        return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
+    }
+
+    public static HitResult getPlayerHitResult(Player pPlayer) {
+        var pickRange = 6.0D;
+        var reachDistanceAttribute = pPlayer.getAttribute(ForgeMod.REACH_DISTANCE.get());
+        if (reachDistanceAttribute != null) {
+            var reachDistance = reachDistanceAttribute.getValue();
+            pickRange = pPlayer.isCreative() ? reachDistance : reachDistance - 0.5D;
+        }
+        return pPlayer.pick(pickRange, 1.0F, false);
+    }
+
+    public static boolean isHittingGrill(BlockHitResult pHit) {
+        var clickLocation = pHit.getLocation();
+        var clickBlockPos = pHit.getBlockPos();
+        var clickRelativeX = clickLocation.x - (double) clickBlockPos.getX();
+        var clickRelativeY = clickLocation.y - (double) clickBlockPos.getY();
+        var clickRelativeZ = clickLocation.z - (double) clickBlockPos.getZ();
+        if ((clickRelativeX <= 0.0625 || clickRelativeX > 0.9375) && (clickRelativeZ <= 0.0625 || clickRelativeZ > 0.9375) && clickRelativeY <= 0.625) {
+            return true;
+        }
+        return clickRelativeY > 0.625;
     }
 
     @Nullable
@@ -252,7 +348,12 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @Override
     @SuppressWarnings("deprecation")
     public boolean canBeReplaced(BlockState pState, BlockPlaceContext pUseContext) {
-        return !pUseContext.isSecondaryUseActive() && isCampfire(pUseContext.getItemInHand()) || super.canBeReplaced(pState, pUseContext);
+        if (pUseContext.getLevel().getBlockEntity(pUseContext.getClickedPos()) instanceof GrillBlockEntity grillBlockEntity) {
+            if (grillBlockEntity.getCampfireData().toBlockState().isAir()) {
+                return !pUseContext.isSecondaryUseActive() && isCampfire(pUseContext.getItemInHand()) || super.canBeReplaced(pState, pUseContext);
+            }
+        }
+        return super.canBeReplaced(pState, pUseContext);
     }
 
     public static boolean isCampfire(BlockState pState) {
