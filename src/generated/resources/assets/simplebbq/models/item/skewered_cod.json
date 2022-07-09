@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "simplebbq:item/raw_skewered_rabbit"
+    "layer0": "simplebbq:item/skewered_cod"
   }
 }

@@ -55,23 +55,23 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
         grillCookingRecipe(pFinishedRecipeConsumer, Items.RABBIT, Items.COOKED_RABBIT, 400);
 
         // skewering recipe
-        skeweringRecipe(pFinishedRecipeConsumer, Items.BEEF, SimpleBBQRegistry.RAW_SKEWERED_BEEF.get());
-        skeweringRecipe(pFinishedRecipeConsumer, Items.CHICKEN, SimpleBBQRegistry.RAW_SKEWERED_CHICKEN.get());
-        skeweringRecipe(pFinishedRecipeConsumer, Items.MUTTON, SimpleBBQRegistry.RAW_SKEWERED_MUTTON.get());
-        skeweringRecipe(pFinishedRecipeConsumer, Items.PORKCHOP, SimpleBBQRegistry.RAW_SKEWERED_PORK.get());
-        skeweringRecipe(pFinishedRecipeConsumer, Items.RABBIT, SimpleBBQRegistry.RAW_SKEWERED_RABBIT.get());
-        skeweringRecipe(pFinishedRecipeConsumer, Items.COD, SimpleBBQRegistry.RAW_SKEWERED_COD.get());
-        skeweringRecipe(pFinishedRecipeConsumer, Items.SALMON, SimpleBBQRegistry.RAW_SKEWERED_SALMON.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.BEEF, SimpleBBQRegistry.SKEWERED_BEEF.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.CHICKEN, SimpleBBQRegistry.SKEWERED_CHICKEN.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.MUTTON, SimpleBBQRegistry.SKEWERED_MUTTON.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.PORKCHOP, SimpleBBQRegistry.SKEWERED_PORK.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.RABBIT, SimpleBBQRegistry.SKEWERED_RABBIT.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.COD, SimpleBBQRegistry.SKEWERED_COD.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.SALMON, SimpleBBQRegistry.SKEWERED_SALMON.get());
         skeweringRecipe(pFinishedRecipeConsumer, Items.POTATO, SimpleBBQRegistry.SKEWERED_POTATO.get());
 
         // skewer cooking recipe
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_BEEF.get(), SimpleBBQRegistry.COOKED_SKEWERED_BEEF.get(), 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_CHICKEN.get(), SimpleBBQRegistry.COOKED_SKEWERED_CHICKEN.get(), 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_MUTTON.get(), SimpleBBQRegistry.COOKED_SKEWERED_MUTTON.get(), 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_PORK.get(), SimpleBBQRegistry.COOKED_SKEWERED_PORK.get(), 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_RABBIT.get(), SimpleBBQRegistry.COOKED_SKEWERED_RABBIT.get(), 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_COD.get(), SimpleBBQRegistry.COOKED_SKEWERED_COD.get(), 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RAW_SKEWERED_SALMON.get(), SimpleBBQRegistry.COOKED_SKEWERED_SALMON.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SKEWERED_BEEF.get(), SimpleBBQRegistry.COOKED_SKEWERED_BEEF.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SKEWERED_CHICKEN.get(), SimpleBBQRegistry.COOKED_SKEWERED_CHICKEN.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SKEWERED_MUTTON.get(), SimpleBBQRegistry.COOKED_SKEWERED_MUTTON.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SKEWERED_PORK.get(), SimpleBBQRegistry.COOKED_SKEWERED_PORK.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SKEWERED_RABBIT.get(), SimpleBBQRegistry.COOKED_SKEWERED_RABBIT.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SKEWERED_COD.get(), SimpleBBQRegistry.COOKED_SKEWERED_COD.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SKEWERED_SALMON.get(), SimpleBBQRegistry.COOKED_SKEWERED_SALMON.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SKEWERED_POTATO.get(), SimpleBBQRegistry.BAKED_SKEWERED_POTATO.get(), 400);
     }
 

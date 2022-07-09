@@ -1,9 +1,9 @@
 {
   "type": "simplebbq:skewering",
   "ingredient": {
-    "item": "minecraft:chicken"
+    "item": "minecraft:salmon"
   },
   "result": {
-    "item": "simplebbq:raw_skewered_chicken"
+    "item": "simplebbq:skewered_salmon"
   }
 }

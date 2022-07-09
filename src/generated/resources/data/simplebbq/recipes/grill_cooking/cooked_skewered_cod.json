@@ -1,7 +1,7 @@
 {
   "type": "simplebbq:grill_cooking",
   "ingredient": {
-    "item": "simplebbq:raw_skewered_cod"
+    "item": "simplebbq:skewered_cod"
   },
   "result": "simplebbq:cooked_skewered_cod",
   "cookingtime": 400

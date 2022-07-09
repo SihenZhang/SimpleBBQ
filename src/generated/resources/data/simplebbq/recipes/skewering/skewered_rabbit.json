@@ -1,9 +1,9 @@
 {
   "type": "simplebbq:skewering",
   "ingredient": {
-    "item": "minecraft:beef"
+    "item": "minecraft:rabbit"
   },
   "result": {
-    "item": "simplebbq:raw_skewered_beef"
+    "item": "simplebbq:skewered_rabbit"
   }
 }
