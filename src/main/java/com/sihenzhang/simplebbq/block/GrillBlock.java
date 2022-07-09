@@ -7,10 +7,12 @@ import com.sihenzhang.simplebbq.block.entity.GrillBlockEntity;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -18,7 +20,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Projectile;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
@@ -104,7 +105,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             // try to light the grill
             if (pState.hasProperty(LIT) && !pState.getValue(LIT) && pState.hasProperty(WATERLOGGED) && !pState.getValue(WATERLOGGED) && isCampfire(campfireData.toBlockState()) && !campfireData.lit) {
                 if (stackInHand.getItem() instanceof FlintAndSteelItem) {
-                    pLevel.playSound(pPlayer, pPos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, pLevel.getRandom().nextFloat() * 0.4F + 0.8F);
+                    pLevel.playSound(pPlayer, pPos, SoundEvents.FLINTANDSTEEL_USE, SoundSource.BLOCKS, 1.0F, Mth.nextFloat(pLevel.getRandom(), 0.8F, 1.2F));
                     var newCampfireData = campfireData.copy();
                     newCampfireData.lit = true;
                     grillBlockEntity.setCampfireData(newCampfireData);
@@ -114,7 +115,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                     return InteractionResult.sidedSuccess(pLevel.isClientSide());
                 }
                 if (stackInHand.getItem() instanceof FireChargeItem) {
-                    pLevel.playSound(pPlayer, pPos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, pLevel.getRandom().nextFloat() * 0.4F + 0.8F);
+                    pLevel.playSound(pPlayer, pPos, SoundEvents.FIRECHARGE_USE, SoundSource.BLOCKS, 1.0F, Mth.nextFloat(pLevel.getRandom(), 0.8F, 1.2F));
                     var newCampfireData = campfireData.copy();
                     newCampfireData.lit = true;
                     grillBlockEntity.setCampfireData(newCampfireData);
@@ -154,8 +155,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
         if (!pEntity.fireImmune() && pState.getValue(LIT) && pEntity instanceof LivingEntity livingEntity && !EnchantmentHelper.hasFrostWalker(livingEntity)) {
             var damage = 1.0F;
-            var blockEntity = pLevel.getBlockEntity(pPos);
-            if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
+            if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
                 var block = grillBlockEntity.getCampfireData().toBlockState().getBlock();
                 if (block instanceof CampfireBlock campfireBlock) {
                     damage = (float) campfireBlock.fireDamage;
@@ -372,27 +372,21 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
 
     @Override
     public void animateTick(BlockState pState, Level pLevel, BlockPos pPos, Random pRandom) {
-        if (pState.getValue(LIT)) {
-            if (pRandom.nextInt(10) == 0) {
-                pLevel.playLocalSound((double) pPos.getX() + 0.5D, (double) pPos.getY() + 0.5D, (double) pPos.getZ() + 0.5D, SoundEvents.CAMPFIRE_CRACKLE, SoundSource.BLOCKS, 0.5F + pRandom.nextFloat(), pRandom.nextFloat() * 0.7F + 0.6F, false);
+        if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
+            var campfireState = grillBlockEntity.getCampfireData().toBlockState();
+            if (isCampfire(campfireState)) {
+                campfireState.getBlock().animateTick(campfireState, pLevel, pPos, pRandom);
             }
-
-//            if (this.spawnParticles && pRand.nextInt(5) == 0) {
-//                for(int i = 0; i < pRand.nextInt(1) + 1; ++i) {
-//                    pLevel.addParticle(ParticleTypes.LAVA, (double)pPos.getX() + 0.5D, (double)pPos.getY() + 0.5D, (double)pPos.getZ() + 0.5D, (double)(pRand.nextFloat() / 2.0F), 5.0E-5D, (double)(pRand.nextFloat() / 2.0F));
-//                }
-//            }
         }
     }
 
     public static void dowse(@Nullable Entity pEntity, LevelAccessor pLevel, BlockPos pPos, BlockState pState) {
         if (pLevel.isClientSide()) {
             for (int i = 0; i < 20; i++) {
-                CampfireBlock.makeParticles((Level) pLevel, pPos, false, true);
+                makeCampfireParticles((Level) pLevel, pPos, true);
             }
         }
-        var blockEntity = pLevel.getBlockEntity(pPos);
-        if (blockEntity instanceof GrillBlockEntity grillBlockEntity) {
+        if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
             var newCampfireData = grillBlockEntity.getCampfireData().copy();
             newCampfireData.lit = false;
             grillBlockEntity.setCampfireData(newCampfireData);
@@ -414,6 +408,17 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             return true;
         } else {
             return false;
+        }
+    }
+
+    public static void makeCampfireParticles(Level pLevel, BlockPos pPos, boolean pSpawnExtraSmoke) {
+        var random = pLevel.getRandom();
+        var x = (double) pPos.getX() + 0.5D + random.nextDouble() / 3.0D * (random.nextBoolean() ? 1.0D : -1.0D);
+        var y = (double) pPos.getY() + random.nextDouble() + random.nextDouble();
+        var z = (double) pPos.getZ() + 0.5D + random.nextDouble() / 3.0D * (random.nextBoolean() ? 1.0D : -1.0D);
+        pLevel.addAlwaysVisibleParticle(SimpleBBQRegistry.CAMPFIRE_SMOKE_UNDER_GRILL.get(), true, x, y, z, 0.0D, 0.025D, 0.0D);
+        if (pSpawnExtraSmoke) {
+            pLevel.addParticle(ParticleTypes.SMOKE, (double) pPos.getX() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1), (double) pPos.getY() + 0.4D, (double) pPos.getZ() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1), 0.0D, 0.005D, 0.0D);
         }
     }
 
@@ -449,7 +454,10 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level pLevel, BlockState pState, BlockEntityType<T> pBlockEntityType) {
-        return pLevel.isClientSide() ? null : createTickerHelper(pBlockEntityType, SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), GrillBlockEntity::serverTick);
+        if (pLevel.isClientSide()) {
+            return createTickerHelper(pBlockEntityType, SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), GrillBlockEntity::clientTick);
+        }
+        return createTickerHelper(pBlockEntityType, SimpleBBQRegistry.GRILL_BLOCK_ENTITY.get(), GrillBlockEntity::serverTick);
     }
 
     @Override

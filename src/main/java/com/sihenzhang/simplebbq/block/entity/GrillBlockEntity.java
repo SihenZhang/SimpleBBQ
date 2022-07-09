@@ -116,6 +116,15 @@ public class GrillBlockEntity extends BlockEntity {
         }
     }
 
+    public static void clientTick(Level pLevel, BlockPos pPos, BlockState pState, GrillBlockEntity pBlockEntity) {
+        if (pState.hasProperty(GrillBlock.LIT) && pState.getValue(GrillBlock.LIT) && pBlockEntity.campfireData.lit) {
+            var random = pLevel.getRandom();
+            if (random.nextFloat() < 0.05F) {
+                GrillBlock.makeCampfireParticles(pLevel, pPos, false);
+            }
+        }
+    }
+
     public ItemStackHandler getInventory() {
         return inventory;
     }

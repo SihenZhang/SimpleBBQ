@@ -10,6 +10,8 @@ import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
 import com.sihenzhang.simplebbq.recipe.SimpleBBQRecipeType;
 import com.sihenzhang.simplebbq.recipe.SkeweringRecipe;
 import net.minecraft.core.Registry;
+import net.minecraft.core.particles.ParticleType;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.entity.ai.village.poi.PoiType;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.item.BlockItem;
@@ -26,6 +28,7 @@ public final class SimpleBBQRegistry {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, SimpleBBQ.MOD_ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, SimpleBBQ.MOD_ID);
     public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, SimpleBBQ.MOD_ID);
+    public static final DeferredRegister<ParticleType<?>> PARTICLE_TYPES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, SimpleBBQ.MOD_ID);
     public static final DeferredRegister<PoiType> POI_TYPES = DeferredRegister.create(ForgeRegistries.POI_TYPES, SimpleBBQ.MOD_ID);
     public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.PROFESSIONS, SimpleBBQ.MOD_ID);
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registry.RECIPE_TYPE_REGISTRY, SimpleBBQ.MOD_ID);
@@ -35,6 +38,8 @@ public final class SimpleBBQRegistry {
     public static final RegistryObject<RecipeSerializer<GrillCookingRecipe>> GRILL_COOKING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("grill_cooking", GrillCookingRecipe.Serializer::new);
     public static final RegistryObject<RecipeType<SkeweringRecipe>> SKEWERING_RECIPE_TYPE = RECIPE_TYPES.register("skewering", () -> new SimpleBBQRecipeType<>("skewering"));
     public static final RegistryObject<RecipeSerializer<SkeweringRecipe>> SKEWERING_RECIPE_SERIALIZER = RECIPE_SERIALIZERS.register("skewering", SkeweringRecipe.Serializer::new);
+
+    public static final RegistryObject<SimpleParticleType> CAMPFIRE_SMOKE_UNDER_GRILL = PARTICLE_TYPES.register("campfire_smoke_under_grill", () -> new SimpleParticleType(true));
 
     public static final RegistryObject<Block> GRILL_BLOCK = BLOCKS.register("grill", GrillBlock::new);
     public static final RegistryObject<Item> GRILL_BLOCK_ITEM = ITEMS.register("grill", GrillItem::new);
