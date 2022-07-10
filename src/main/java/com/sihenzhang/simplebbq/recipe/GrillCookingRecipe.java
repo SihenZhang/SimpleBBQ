@@ -16,7 +16,7 @@ import javax.annotation.Nullable;
 
 public class GrillCookingRecipe extends AbstractCookingRecipe {
     public GrillCookingRecipe(ResourceLocation pId, String pGroup, Ingredient pIngredient, ItemStack pResult, int pCookingTime) {
-        super(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), pId, pGroup, pIngredient, pResult, 0, pCookingTime);
+        super(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), pId, pGroup, pIngredient, pResult, 0.0F, pCookingTime);
     }
 
     @Override

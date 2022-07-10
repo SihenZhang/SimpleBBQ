@@ -5,6 +5,7 @@ import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.util.RLUtils;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -22,22 +23,22 @@ public class SimpleBBQItemModelProvider extends ItemModelProvider {
         this.blockItem(SimpleBBQRegistry.GRILL_BLOCK.get());
         this.blockItem(SimpleBBQRegistry.SKEWERING_TABLE_BLOCK.get());
 
-        this.simpleItem(SimpleBBQRegistry.SKEWERED_BEEF.get(), RLUtils.createRL("item/skewered_beef"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_BEEF.get(), RLUtils.createRL("item/cooked_skewered_beef"));
-        this.simpleItem(SimpleBBQRegistry.SKEWERED_CHICKEN.get(), RLUtils.createRL("item/skewered_chicken"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_CHICKEN.get(), RLUtils.createRL("item/cooked_skewered_chicken"));
-        this.simpleItem(SimpleBBQRegistry.SKEWERED_MUTTON.get(), RLUtils.createRL("item/skewered_mutton"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_MUTTON.get(), RLUtils.createRL("item/cooked_skewered_mutton"));
-        this.simpleItem(SimpleBBQRegistry.SKEWERED_PORK.get(), RLUtils.createRL("item/skewered_pork"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_PORK.get(), RLUtils.createRL("item/cooked_skewered_pork"));
-        this.simpleItem(SimpleBBQRegistry.SKEWERED_RABBIT.get(), RLUtils.createRL("item/skewered_rabbit"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_RABBIT.get(), RLUtils.createRL("item/cooked_skewered_rabbit"));
-        this.simpleItem(SimpleBBQRegistry.SKEWERED_COD.get(), RLUtils.createRL("item/skewered_cod"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_COD.get(), RLUtils.createRL("item/cooked_skewered_cod"));
-        this.simpleItem(SimpleBBQRegistry.SKEWERED_SALMON.get(), RLUtils.createRL("item/skewered_salmon"));
-        this.simpleItem(SimpleBBQRegistry.COOKED_SKEWERED_SALMON.get(), RLUtils.createRL("item/cooked_skewered_salmon"));
-        this.simpleItem(SimpleBBQRegistry.SKEWERED_POTATO.get(), RLUtils.createRL("item/skewered_potato"));
-        this.simpleItem(SimpleBBQRegistry.BAKED_SKEWERED_POTATO.get(), RLUtils.createRL("item/baked_skewered_potato"));
+        this.simpleItem(SimpleBBQRegistry.BEEF_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.COOKED_BEEF_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.CHICKEN_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.COOKED_CHICKEN_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.MUTTON_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.COOKED_MUTTON_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.PORK_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.COOKED_PORK_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.RABBIT_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.COOKED_RABBIT_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.COD_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.COOKED_COD_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.SALMON_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.COOKED_SALMON_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.POTATO_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.BAKED_POTATO_SKEWER.get());
     }
 
     public ItemModelBuilder blockItem(Block block) {
@@ -48,7 +49,11 @@ public class SimpleBBQItemModelProvider extends ItemModelProvider {
         return this.withExistingParent(getBlockName(block), model);
     }
 
-    public ItemModelBuilder simpleItem(ItemLike item, ResourceLocation texture) {
+    public ItemModelBuilder simpleItem(Item item) {
+        return this.simpleItem(item, RLUtils.createRL("item/" + getItemName(item)));
+    }
+
+    public ItemModelBuilder simpleItem(Item item, ResourceLocation texture) {
         return this.item(getItemName(item), texture);
     }
 

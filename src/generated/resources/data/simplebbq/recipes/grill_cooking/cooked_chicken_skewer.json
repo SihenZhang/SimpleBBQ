@@ -1,0 +1,8 @@
+{
+  "type": "simplebbq:grill_cooking",
+  "ingredient": {
+    "item": "simplebbq:chicken_skewer"
+  },
+  "result": "simplebbq:cooked_chicken_skewer",
+  "cookingtime": 400
+}

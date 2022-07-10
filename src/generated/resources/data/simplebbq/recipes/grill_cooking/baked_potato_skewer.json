@@ -1,0 +1,8 @@
+{
+  "type": "simplebbq:grill_cooking",
+  "ingredient": {
+    "item": "simplebbq:potato_skewer"
+  },
+  "result": "simplebbq:baked_potato_skewer",
+  "cookingtime": 400
+}

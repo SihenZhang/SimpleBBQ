@@ -1,8 +1,0 @@
-{
-  "type": "simplebbq:grill_cooking",
-  "ingredient": {
-    "item": "simplebbq:skewered_mutton"
-  },
-  "result": "simplebbq:cooked_skewered_mutton",
-  "cookingtime": 400
-}

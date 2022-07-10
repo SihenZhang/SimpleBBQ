@@ -20,11 +20,11 @@ public class AddingTradesEvent {
             var trades = event.getTrades();
 
             var noviceTrades = trades.get(1);
-            noviceTrades.add(itemsAndEmeraldsToItems(Items.POTATO, 6, 1, SimpleBBQRegistry.SKEWERED_POTATO.get(), 6, 16, 2, 0.05F));
-            noviceTrades.add(itemsAndEmeraldsToItems(Items.CHICKEN, 4, 1, SimpleBBQRegistry.SKEWERED_CHICKEN.get(), 4, 16, 2, 0.05F));
-            noviceTrades.add(itemsAndEmeraldsToItems(Items.PORKCHOP, 4, 1, SimpleBBQRegistry.SKEWERED_PORK.get(), 4, 16, 2, 0.05F));
-            noviceTrades.add(itemsAndEmeraldsToItems(Items.RABBIT, 3, 1, SimpleBBQRegistry.SKEWERED_RABBIT.get(), 3, 16, 2, 0.05F));
-            noviceTrades.add(itemsAndEmeraldsToItems(Items.COD, 3, 1, SimpleBBQRegistry.SKEWERED_COD.get(), 3, 16, 2, 0.05F));
+            noviceTrades.add(itemsAndEmeraldsToItems(Items.POTATO, 6, 1, SimpleBBQRegistry.POTATO_SKEWER.get(), 6, 16, 2, 0.05F));
+            noviceTrades.add(itemsAndEmeraldsToItems(Items.CHICKEN, 4, 1, SimpleBBQRegistry.CHICKEN_SKEWER.get(), 4, 16, 2, 0.05F));
+            noviceTrades.add(itemsAndEmeraldsToItems(Items.PORKCHOP, 4, 1, SimpleBBQRegistry.PORK_SKEWER.get(), 4, 16, 2, 0.05F));
+            noviceTrades.add(itemsAndEmeraldsToItems(Items.RABBIT, 3, 1, SimpleBBQRegistry.RABBIT_SKEWER.get(), 3, 16, 2, 0.05F));
+            noviceTrades.add(itemsAndEmeraldsToItems(Items.COD, 3, 1, SimpleBBQRegistry.COD_SKEWER.get(), 3, 16, 2, 0.05F));
             noviceTrades.add(itemsForEmeralds(Items.STICK, 32, 1, 16, 2, 0.05F));
             noviceTrades.add(itemsForEmeralds(Items.FLINT, 24, 1, 16, 2, 0.05F));
 
@@ -34,9 +34,9 @@ public class AddingTradesEvent {
             apprenticeTrades.add(emeraldsForItems(4, SimpleBBQRegistry.GRILL_BLOCK.get(), 1, 12, 5, 0.05F));
 
             var journeymanTrades = trades.get(3);
-            journeymanTrades.add(itemsAndEmeraldsToItems(Items.MUTTON, 4, 1, SimpleBBQRegistry.SKEWERED_MUTTON.get(), 4, 12, 10, 0.05F));
-            journeymanTrades.add(itemsAndEmeraldsToItems(Items.BEEF, 4, 1, SimpleBBQRegistry.SKEWERED_BEEF.get(), 4, 12, 10, 0.05F));
-            journeymanTrades.add(itemsAndEmeraldsToItems(Items.SALMON, 3, 1, SimpleBBQRegistry.SKEWERED_SALMON.get(), 3, 12, 10, 0.05F));
+            journeymanTrades.add(itemsAndEmeraldsToItems(Items.MUTTON, 4, 1, SimpleBBQRegistry.MUTTON_SKEWER.get(), 4, 12, 10, 0.05F));
+            journeymanTrades.add(itemsAndEmeraldsToItems(Items.BEEF, 4, 1, SimpleBBQRegistry.BEEF_SKEWER.get(), 4, 12, 10, 0.05F));
+            journeymanTrades.add(itemsAndEmeraldsToItems(Items.SALMON, 3, 1, SimpleBBQRegistry.SALMON_SKEWER.get(), 3, 12, 10, 0.05F));
 
             var expertTrades = trades.get(4);
             expertTrades.add(itemsAndEmeraldsToItems(Items.RED_MUSHROOM, 1, 2, SimpleBBQRegistry.CHILI_POWDER.get(), 6, 12, 15, 0.2F));

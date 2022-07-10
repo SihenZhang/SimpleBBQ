@@ -1,0 +1,8 @@
+{
+  "type": "simplebbq:grill_cooking",
+  "ingredient": {
+    "item": "simplebbq:salmon_skewer"
+  },
+  "result": "simplebbq:cooked_salmon_skewer",
+  "cookingtime": 400
+}

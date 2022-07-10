@@ -1,0 +1,9 @@
+{
+  "type": "simplebbq:skewering",
+  "ingredient": {
+    "item": "minecraft:salmon"
+  },
+  "result": {
+    "item": "simplebbq:salmon_skewer"
+  }
+}

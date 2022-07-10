@@ -1,8 +1,0 @@
-{
-  "type": "simplebbq:grill_cooking",
-  "ingredient": {
-    "item": "simplebbq:skewered_rabbit"
-  },
-  "result": "simplebbq:cooked_skewered_rabbit",
-  "cookingtime": 400
-}

@@ -1,8 +1,0 @@
-{
-  "type": "simplebbq:grill_cooking",
-  "ingredient": {
-    "item": "simplebbq:skewered_chicken"
-  },
-  "result": "simplebbq:cooked_skewered_chicken",
-  "cookingtime": 400
-}

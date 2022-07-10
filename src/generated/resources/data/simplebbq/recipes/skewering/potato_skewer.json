@@ -1,0 +1,9 @@
+{
+  "type": "simplebbq:skewering",
+  "ingredient": {
+    "item": "minecraft:potato"
+  },
+  "result": {
+    "item": "simplebbq:potato_skewer"
+  }
+}
