@@ -69,6 +69,10 @@ public final class SimpleBBQRegistry {
     public static final RegistryObject<Item> COOKED_COD_SKEWER = ITEMS.register("cooked_cod_skewer", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
     public static final RegistryObject<Item> SALMON_SKEWER = ITEMS.register("salmon_skewer", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
     public static final RegistryObject<Item> COOKED_SALMON_SKEWER = ITEMS.register("cooked_salmon_skewer", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
+    public static final RegistryObject<Item> BREAD_SLICE_SKEWER = ITEMS.register("bread_slice_skewer", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
+    public static final RegistryObject<Item> TOAST_SKEWER = ITEMS.register("toast_skewer", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
+    public static final RegistryObject<Item> MUSHROOM_SKEWER = ITEMS.register("mushroom_skewer", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
+    public static final RegistryObject<Item> COOKED_MUSHROOM_SKEWER = ITEMS.register("cooked_mushroom_skewer", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
     public static final RegistryObject<Item> POTATO_SKEWER = ITEMS.register("potato_skewer", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
     public static final RegistryObject<Item> BAKED_POTATO_SKEWER = ITEMS.register("baked_potato_skewer", () -> new Item(new Item.Properties().tab(SimpleBBQ.TAB)));
 }

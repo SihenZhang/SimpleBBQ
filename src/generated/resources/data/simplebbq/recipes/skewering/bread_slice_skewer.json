@@ -1,0 +1,9 @@
+{
+  "type": "simplebbq:skewering",
+  "ingredient": {
+    "item": "minecraft:bread"
+  },
+  "result": {
+    "item": "simplebbq:bread_slice_skewer"
+  }
+}

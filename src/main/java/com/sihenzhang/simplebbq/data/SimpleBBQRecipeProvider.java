@@ -62,6 +62,8 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
         skeweringRecipe(pFinishedRecipeConsumer, Items.RABBIT, SimpleBBQRegistry.RABBIT_SKEWER.get());
         skeweringRecipe(pFinishedRecipeConsumer, Items.COD, SimpleBBQRegistry.COD_SKEWER.get());
         skeweringRecipe(pFinishedRecipeConsumer, Items.SALMON, SimpleBBQRegistry.SALMON_SKEWER.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.BREAD, SimpleBBQRegistry.BREAD_SLICE_SKEWER.get());
+        skeweringRecipe(pFinishedRecipeConsumer, Items.BROWN_MUSHROOM, SimpleBBQRegistry.MUSHROOM_SKEWER.get());
         skeweringRecipe(pFinishedRecipeConsumer, Items.POTATO, SimpleBBQRegistry.POTATO_SKEWER.get());
 
         // skewer cooking recipe
@@ -72,6 +74,8 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RABBIT_SKEWER.get(), SimpleBBQRegistry.COOKED_RABBIT_SKEWER.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.COD_SKEWER.get(), SimpleBBQRegistry.COOKED_COD_SKEWER.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SALMON_SKEWER.get(), SimpleBBQRegistry.COOKED_SALMON_SKEWER.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.BREAD_SLICE_SKEWER.get(), SimpleBBQRegistry.TOAST_SKEWER.get(), 400);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.MUSHROOM_SKEWER.get(), SimpleBBQRegistry.COOKED_MUSHROOM_SKEWER.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.POTATO_SKEWER.get(), SimpleBBQRegistry.BAKED_POTATO_SKEWER.get(), 400);
     }
 

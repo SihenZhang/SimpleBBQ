@@ -23,6 +23,10 @@ public class SimpleBBQItemModelProvider extends ItemModelProvider {
         this.blockItem(SimpleBBQRegistry.GRILL_BLOCK.get());
         this.blockItem(SimpleBBQRegistry.SKEWERING_TABLE_BLOCK.get());
 
+        this.simpleItem(SimpleBBQRegistry.CHILI_POWDER.get());
+        this.simpleItem(SimpleBBQRegistry.CUMIN.get());
+        this.simpleItem(SimpleBBQRegistry.SALT_AND_PEPPER.get());
+
         this.simpleItem(SimpleBBQRegistry.BEEF_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.COOKED_BEEF_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.CHICKEN_SKEWER.get());
@@ -37,6 +41,10 @@ public class SimpleBBQItemModelProvider extends ItemModelProvider {
         this.simpleItem(SimpleBBQRegistry.COOKED_COD_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.SALMON_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.COOKED_SALMON_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.BREAD_SLICE_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.TOAST_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.MUSHROOM_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.COOKED_MUSHROOM_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.POTATO_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.BAKED_POTATO_SKEWER.get());
     }
