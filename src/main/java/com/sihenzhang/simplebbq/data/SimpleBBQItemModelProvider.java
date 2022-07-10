@@ -44,7 +44,7 @@ public class SimpleBBQItemModelProvider extends ItemModelProvider {
         this.simpleItem(SimpleBBQRegistry.BREAD_SLICE_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.TOAST_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.MUSHROOM_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.COOKED_MUSHROOM_SKEWER.get());
+        this.simpleItem(SimpleBBQRegistry.ROASTED_MUSHROOM_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.POTATO_SKEWER.get());
         this.simpleItem(SimpleBBQRegistry.BAKED_POTATO_SKEWER.get());
     }

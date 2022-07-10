@@ -3,6 +3,6 @@
   "ingredient": {
     "item": "simplebbq:mushroom_skewer"
   },
-  "result": "simplebbq:cooked_mushroom_skewer",
+  "result": "simplebbq:roasted_mushroom_skewer",
   "cookingtime": 400
 }
