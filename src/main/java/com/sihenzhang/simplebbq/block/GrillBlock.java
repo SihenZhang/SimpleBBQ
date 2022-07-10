@@ -416,7 +416,8 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         var x = (double) pPos.getX() + 0.5D + random.nextDouble() / 3.0D * (random.nextBoolean() ? 1.0D : -1.0D);
         var y = (double) pPos.getY() + random.nextDouble() + random.nextDouble();
         var z = (double) pPos.getZ() + 0.5D + random.nextDouble() / 3.0D * (random.nextBoolean() ? 1.0D : -1.0D);
-        pLevel.addAlwaysVisibleParticle(SimpleBBQRegistry.CAMPFIRE_SMOKE_UNDER_GRILL.get(), true, x, y, z, 0.0D, 0.025D, 0.0D);
+        var ySpeed = Mth.nextDouble(random, 0.015D, 0.025D);
+        pLevel.addAlwaysVisibleParticle(SimpleBBQRegistry.CAMPFIRE_SMOKE_UNDER_GRILL.get(), true, x, y, z, 0.0D, ySpeed, 0.0D);
         if (pSpawnExtraSmoke) {
             pLevel.addParticle(ParticleTypes.SMOKE, (double) pPos.getX() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1), (double) pPos.getY() + 0.4D, (double) pPos.getZ() + 0.5D + random.nextDouble() / 4.0D * (double) (random.nextBoolean() ? 1 : -1), 0.0D, 0.005D, 0.0D);
         }
