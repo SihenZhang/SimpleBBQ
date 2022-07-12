@@ -2,7 +2,6 @@ package com.sihenzhang.simplebbq.block.entity;
 
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
@@ -15,9 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.items.wrapper.RecipeWrapper;
@@ -38,7 +34,6 @@ public class SkeweringTableBlockEntity extends BlockEntity {
             markUpdated();
         }
     };
-    private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inventory);
 
     public SkeweringTableBlockEntity(BlockPos pWorldPosition, BlockState pBlockState) {
         super(SimpleBBQRegistry.SKEWERING_TABLE_BLOCK_ENTITY.get(), pWorldPosition, pBlockState);
@@ -129,14 +124,5 @@ public class SkeweringTableBlockEntity extends BlockEntity {
     private void markUpdated() {
         this.setChanged();
         level.sendBlockUpdated(worldPosition, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL);
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) {
-            return inventoryCap.cast();
-        }
-        return super.getCapability(cap, side);
     }
 }

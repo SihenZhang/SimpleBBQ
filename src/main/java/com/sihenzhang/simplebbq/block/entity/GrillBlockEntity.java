@@ -22,10 +22,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.util.INBTSerializable;
-import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -55,7 +52,6 @@ public class GrillBlockEntity extends BlockEntity {
             markUpdated();
         }
     };
-    private final LazyOptional<ItemStackHandler> inventoryCap = LazyOptional.of(() -> inventory);
     private final int[] cookingProgress = new int[SLOT_NUM];
     private final int[] cookingTime = new int[SLOT_NUM];
 
@@ -202,15 +198,6 @@ public class GrillBlockEntity extends BlockEntity {
     private void markUpdated() {
         this.setChanged();
         level.sendBlockUpdated(worldPosition, this.getBlockState(), this.getBlockState(), Block.UPDATE_ALL);
-    }
-
-    @Nonnull
-    @Override
-    public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> cap, @Nullable Direction side) {
-        if (cap.equals(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY)) {
-            return inventoryCap.cast();
-        }
-        return super.getCapability(cap, side);
     }
 
     public static final class CampfireData implements INBTSerializable<CompoundTag> {
