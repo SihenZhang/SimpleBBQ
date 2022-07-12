@@ -22,21 +22,39 @@ public class GrillRenderer implements BlockEntityRenderer<GrillBlockEntity> {
         var direction = pBlockEntity.getBlockState().getValue(GrillBlock.FACING);
         var inventory = pBlockEntity.getInventory();
         var posInt = (int) pBlockEntity.getBlockPos().asLong();
-        for (var j = 0; j < inventory.getSlots(); j++) {
-            var itemStack = inventory.getStackInSlot(j);
+        for (var i = 0; i < inventory.getSlots(); i++) {
+            var itemStack = inventory.getStackInSlot(i);
             if (!itemStack.isEmpty()) {
+                var itemRenderer = mc.getItemRenderer();
+                var isBlockItem = itemRenderer.getModel(itemStack, pBlockEntity.getLevel(), null, 0).isGui3d();
                 pPoseStack.pushPose();
-                pPoseStack.translate(0.5D, 0.98285D, 0.5D);
-                float f = -direction.toYRot();
-                pPoseStack.mulPose(Vector3f.YP.rotationDegrees(f));
-                pPoseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
-                pPoseStack.translate(0.2D - 0.4D * j, 0.0D, 0.0D);
-                pPoseStack.scale(0.45F, 0.45F, 0.45F);
-                mc.getItemRenderer().renderStatic(itemStack, ItemTransforms.TransformType.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, posInt + j);
+                // center the item/block on the grill
+                if (isBlockItem) {
+                    pPoseStack.translate(0.5D, 1.11885D, 0.5D);
+                } else {
+                    pPoseStack.translate(0.5D, 0.98285D, 0.5D);
+                }
+                // rotate the item/block to face the grill
+                pPoseStack.mulPose(Vector3f.YN.rotationDegrees(direction.toYRot()));
+                // rotate the item to lay down on the grill
+                if (!isBlockItem) {
+                    pPoseStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+                }
+                // move the item/block to the specified position
+                pPoseStack.translate(0.2D - 0.4D * i, 0.0D, 0.0D);
+                // resize the item/block
+                if (isBlockItem) {
+                    pPoseStack.scale(0.6F, 0.6F, 0.6F);
+                } else {
+                    pPoseStack.scale(0.45F, 0.45F, 0.45F);
+                }
+                // render the item/block on the grill
+                itemRenderer.renderStatic(itemStack, ItemTransforms.TransformType.FIXED, pPackedLight, pPackedOverlay, pPoseStack, pBufferSource, posInt + i);
                 pPoseStack.popPose();
             }
         }
 
+        // render campfire block
         var blockState = pBlockEntity.getCampfireData().toBlockState();
         pPoseStack.pushPose();
         mc.getBlockRenderer().renderSingleBlock(blockState, pPoseStack, pBufferSource, pPackedLight, pPackedOverlay, EmptyModelData.INSTANCE);
