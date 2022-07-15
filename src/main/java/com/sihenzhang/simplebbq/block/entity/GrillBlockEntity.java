@@ -238,7 +238,7 @@ public class GrillBlockEntity extends BlockEntity {
         }
 
         public BlockState toBlockState() {
-            if (this.registryName == null) {
+            if (registryName == null) {
                 return Blocks.AIR.defaultBlockState();
             }
             var state = ForgeRegistries.BLOCKS.getValue(registryName).defaultBlockState();

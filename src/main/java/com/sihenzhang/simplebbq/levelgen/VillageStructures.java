@@ -1,4 +1,4 @@
-package com.sihenzhang.simplebbq.level;
+package com.sihenzhang.simplebbq.levelgen;
 
 import com.mojang.datafixers.util.Pair;
 import com.sihenzhang.simplebbq.SimpleBBQ;
