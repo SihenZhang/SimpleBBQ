@@ -25,7 +25,6 @@ public class AddingTradesEvent {
             noviceTrades.add(itemsAndEmeraldsToItems(Items.COD, 4, 1, SimpleBBQRegistry.COD_SKEWER.get(), 4, 16, 2, 0.05F));
             noviceTrades.add(itemsAndEmeraldsToItems(Items.CHICKEN, 4, 1, SimpleBBQRegistry.CHICKEN_SKEWER.get(), 4, 16, 2, 0.05F));
             noviceTrades.add(itemsAndEmeraldsToItems(Items.RABBIT, 3, 1, SimpleBBQRegistry.RABBIT_SKEWER.get(), 3, 16, 2, 0.05F));
-            noviceTrades.add(itemsAndEmeraldsToItems(Items.BREAD, 3, 1, SimpleBBQRegistry.BREAD_SLICE_SKEWER.get(), 3, 16, 2, 0.05F));
 
             var apprenticeTrades = trades.get(2);
             apprenticeTrades.add(itemsForEmeralds(Items.BOWL, 20, 1, 16, 10, 0.05F));
