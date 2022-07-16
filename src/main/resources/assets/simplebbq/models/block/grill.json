@@ -2,10 +2,8 @@
 	"credit": "Made with Blockbench",
 	"parent": "block/block",
 	"textures": {
-		"3": "simplebbq:block/grill_top",
-		"4": "simplebbq:block/grill_side",
-		"5": "simplebbq:block/grill_front",
-		"particle": "simplebbq:block/grill_particle"
+		"3": "grill_top",
+		"4": "grill_side"
 	},
 	"elements": [
 		{
@@ -84,24 +82,24 @@
 			"from": [1, 10, 0],
 			"to": [15, 16, 1],
 			"faces": {
-				"north": {"uv": [15, 0, 1, 6], "texture": "#5"},
-				"east": {"uv": [1, 6, 2, 12], "texture": "#5"},
-				"south": {"uv": [1, 0, 15, 6], "texture": "#5"},
-				"west": {"uv": [1, 6, 2, 12], "texture": "#5"},
-				"up": {"uv": [1, 0, 15, 1], "texture": "#5"},
-				"down": {"uv": [15, 5, 1, 6], "texture": "#5"}
+				"north": {"uv": [15, 0, 1, 6], "texture": "#4"},
+				"east": {"uv": [1, 6, 2, 12], "texture": "#4"},
+				"south": {"uv": [1, 0, 15, 6], "texture": "#4"},
+				"west": {"uv": [1, 6, 2, 12], "texture": "#4"},
+				"up": {"uv": [1, 0, 15, 1], "texture": "#4"},
+				"down": {"uv": [15, 5, 1, 6], "texture": "#4"}
 			}
 		},
 		{
 			"from": [1, 10, 15],
 			"to": [15, 16, 16],
 			"faces": {
-				"north": {"uv": [1, 0, 15, 6], "texture": "#5"},
-				"east": {"uv": [1, 6, 2, 12], "texture": "#5"},
-				"south": {"uv": [15, 0, 1, 6], "texture": "#5"},
-				"west": {"uv": [1, 6, 2, 12], "texture": "#5"},
-				"up": {"uv": [15, 0, 1, 1], "texture": "#5"},
-				"down": {"uv": [15, 5, 1, 6], "texture": "#5"}
+				"north": {"uv": [1, 0, 15, 6], "texture": "#4"},
+				"east": {"uv": [1, 6, 2, 12], "texture": "#4"},
+				"south": {"uv": [15, 0, 1, 6], "texture": "#4"},
+				"west": {"uv": [1, 6, 2, 12], "texture": "#4"},
+				"up": {"uv": [15, 0, 1, 1], "texture": "#4"},
+				"down": {"uv": [15, 5, 1, 6], "texture": "#4"}
 			}
 		},
 		{
@@ -118,11 +116,7 @@
 			}
 		}
 	],
-	"display": {
-		"head": {
-			"translation": [0, 10.5, 0]
-		}
-	},
+	"display": {},
 	"groups": [
 		{
 			"name": "grill",
