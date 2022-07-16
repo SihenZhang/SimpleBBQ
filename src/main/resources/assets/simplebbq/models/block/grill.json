@@ -3,7 +3,8 @@
 	"parent": "block/block",
 	"textures": {
 		"3": "grill_top",
-		"4": "grill_side"
+		"4": "grill_side",
+		"particle": "simplebbq:block/grill_particle"
 	},
 	"elements": [
 		{
