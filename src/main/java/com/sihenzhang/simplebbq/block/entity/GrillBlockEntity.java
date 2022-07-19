@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.GrillBlock;
 import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
+import com.sihenzhang.simplebbq.recipe.SeasoningRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -14,7 +15,9 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -23,6 +26,7 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.common.util.INBTSerializable;
+import net.minecraftforge.items.ItemHandlerHelper;
 import net.minecraftforge.items.ItemStackHandler;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -92,6 +96,10 @@ public class GrillBlockEntity extends BlockEntity {
                     if (pBlockEntity.cookingProgress[i] >= pBlockEntity.cookingTime[i]) {
                         var container = new SimpleContainer(stackInSlot);
                         var result = pLevel.getRecipeManager().getRecipeFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), container, pLevel).map(recipe -> recipe.assemble(container)).orElse(stackInSlot);
+                        var seasoningTag = stackInSlot.getTagElement("Seasoning");
+                        if (seasoningTag != null) {
+                            result.addTagElement("Seasoning", seasoningTag);
+                        }
                         Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), result);
                         pBlockEntity.inventory.setStackInSlot(i, ItemStack.EMPTY);
                     }
@@ -193,6 +201,47 @@ public class GrillBlockEntity extends BlockEntity {
             }
         }
         return false;
+    }
+
+    public boolean removeFood(Player player, InteractionHand hand, boolean isHittingLeftSide) {
+        if (!player.getItemInHand(hand).isEmpty()) {
+            return false;
+        }
+        var stackInInventory = inventory.getStackInSlot(isHittingLeftSide ? 0 : 1);
+        if (stackInInventory.isEmpty()) {
+            return false;
+        }
+        inventory.setStackInSlot(isHittingLeftSide ? 0 : 1, ItemStack.EMPTY);
+        player.setItemInHand(hand, stackInInventory);
+        return true;
+    }
+
+    public Optional<SeasoningRecipe> getSeasoningRecipe(ItemStack seasoning, boolean isHittingLeftSide) {
+        var input = inventory.getStackInSlot(isHittingLeftSide ? 0 : 1);
+        return level.getRecipeManager().getRecipeFor(SimpleBBQRegistry.SEASONING_RECIPE_TYPE.get(), new SimpleContainer(input, seasoning), level);
+    }
+
+    public boolean addSeasoning(Player player, ItemStack seasoning, boolean isHittingLeftSide) {
+        var input = inventory.getStackInSlot(isHittingLeftSide ? 0 : 1);
+        if (input.isEmpty()) {
+            return false;
+        }
+        var container = new SimpleContainer(input, seasoning);
+        var optionalRecipe = level.getRecipeManager().getRecipeFor(SimpleBBQRegistry.SEASONING_RECIPE_TYPE.get(), container, level);
+        if (optionalRecipe.isEmpty()) {
+            return false;
+        }
+        var recipe = optionalRecipe.get();
+        var result = recipe.assemble(container);
+        if (result.isEmpty()) {
+            return false;
+        }
+        inventory.setStackInSlot(isHittingLeftSide ? 0 : 1, result);
+        var remainingItems = recipe.getRemainingItems(container);
+        if (!remainingItems.isEmpty()) {
+            remainingItems.forEach(item -> ItemHandlerHelper.giveItemToPlayer(player, item));
+        }
+        return true;
     }
 
     private void markUpdated() {

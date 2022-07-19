@@ -12,14 +12,14 @@ import net.minecraftforge.fml.common.Mod;
 @Mod.EventBusSubscriber(modid = SimpleBBQ.MOD_ID)
 public class PlayerEatingFoodEvent {
     @SubscribeEvent
-    public static void onItemUse(final LivingEntityUseItemEvent event) {
+    public static void onItemUseStart(final LivingEntityUseItemEvent.Start event) {
         if (event.getEntityLiving() instanceof Player player && !(player instanceof FakePlayer)) {
             var stack = event.getItem();
             var seasoningTag = stack.getTagElement("Seasoning");
             if (seasoningTag != null && seasoningTag.contains("SeasoningList", Tag.TAG_LIST)) {
                 var seasoningList = seasoningTag.getList("SeasoningList", Tag.TAG_STRING);
                 if (seasoningList.contains(StringTag.valueOf("chili_powder"))) {
-                    event.setDuration(event.getDuration() - 4);
+                    event.setDuration(Math.max(event.getDuration() - 4, 1));
                 }
             }
         }

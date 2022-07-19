@@ -1,0 +1,23 @@
+{
+  "replace": false,
+  "values": [
+    "simplebbq:beef_skewer",
+    "simplebbq:cooked_beef_skewer",
+    "simplebbq:chicken_skewer",
+    "simplebbq:cooked_chicken_skewer",
+    "simplebbq:mutton_skewer",
+    "simplebbq:cooked_mutton_skewer",
+    "simplebbq:pork_skewer",
+    "simplebbq:cooked_pork_skewer",
+    "simplebbq:rabbit_skewer",
+    "simplebbq:cooked_rabbit_skewer",
+    "simplebbq:cod_skewer",
+    "simplebbq:cooked_cod_skewer",
+    "simplebbq:salmon_skewer",
+    "simplebbq:cooked_salmon_skewer",
+    "simplebbq:mushroom_skewer",
+    "simplebbq:roasted_mushroom_skewer",
+    "simplebbq:potato_skewer",
+    "simplebbq:baked_potato_skewer"
+  ]
+}

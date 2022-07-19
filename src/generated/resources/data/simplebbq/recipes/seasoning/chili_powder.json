@@ -1,0 +1,10 @@
+{
+  "type": "simplebbq:seasoning",
+  "ingredient": {
+    "tag": "simplebbq:can_be_seasoned/chili_powder"
+  },
+  "seasoning": {
+    "item": "simplebbq:chili_powder"
+  },
+  "name": "chili_powder"
+}

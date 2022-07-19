@@ -1,0 +1,10 @@
+{
+  "type": "simplebbq:seasoning",
+  "ingredient": {
+    "tag": "simplebbq:can_be_seasoned/cumin"
+  },
+  "seasoning": {
+    "item": "simplebbq:cumin"
+  },
+  "name": "cumin"
+}

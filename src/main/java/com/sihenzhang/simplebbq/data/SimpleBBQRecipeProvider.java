@@ -3,7 +3,9 @@ package com.sihenzhang.simplebbq.data;
 import com.sihenzhang.simplebbq.SimpleBBQ;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.data.recipes.GrillCookingRecipeBuilder;
+import com.sihenzhang.simplebbq.data.recipes.SeasoningRecipeBuilder;
 import com.sihenzhang.simplebbq.data.recipes.SkeweringRecipeBuilder;
+import com.sihenzhang.simplebbq.tag.SimpleBBQItemTags;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
@@ -77,6 +79,12 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.BREAD_SLICE_SKEWER.get(), SimpleBBQRegistry.TOAST_SKEWER.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.MUSHROOM_SKEWER.get(), SimpleBBQRegistry.ROASTED_MUSHROOM_SKEWER.get(), 400);
         grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.POTATO_SKEWER.get(), SimpleBBQRegistry.BAKED_POTATO_SKEWER.get(), 400);
+
+        // seasoning recipe
+        seasoningRecipe(pFinishedRecipeConsumer, Ingredient.of(SimpleBBQItemTags.CAN_BE_SEASONED_BY_HONEY), Items.HONEY_BOTTLE, "honey");
+        seasoningRecipe(pFinishedRecipeConsumer, Ingredient.of(SimpleBBQItemTags.CAN_BE_SEASONED_BY_CHILI_POWDER), SimpleBBQRegistry.CHILI_POWDER.get());
+        seasoningRecipe(pFinishedRecipeConsumer, Ingredient.of(SimpleBBQItemTags.CAN_BE_SEASONED_BY_CUMIN), SimpleBBQRegistry.CUMIN.get());
+        seasoningRecipe(pFinishedRecipeConsumer, Ingredient.of(SimpleBBQItemTags.CAN_BE_SEASONED_BY_SALT_AND_PEPPER), SimpleBBQRegistry.SALT_AND_PEPPER.get());
     }
 
     protected static void grillCookingRecipe(Consumer<FinishedRecipe> pFinishedRecipeConsumer, ItemLike pIngredient, ItemLike pResult, int pCookingTime) {
@@ -99,12 +107,28 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
         SkeweringRecipeBuilder.skewering(Ingredient.of(pIngredient), pResult).save(pFinishedRecipeConsumer, getSimpleRecipeName("skewering", pResult));
     }
 
+    protected static void seasoningRecipe(Consumer<FinishedRecipe> pFinishedRecipeConsumer, Ingredient pIngredient, ItemLike pSeasoning) {
+        SeasoningRecipeBuilder.seasoning(pIngredient, Ingredient.of(pSeasoning), getItemName(pSeasoning)).save(pFinishedRecipeConsumer, getSimpleRecipeName("seasoning", getItemName(pSeasoning)));
+    }
+
+    protected static void seasoningRecipe(Consumer<FinishedRecipe> pFinishedRecipeConsumer, Ingredient pIngredient, ItemLike pSeasoning, String name) {
+        SeasoningRecipeBuilder.seasoning(pIngredient, Ingredient.of(pSeasoning), name).save(pFinishedRecipeConsumer, getSimpleRecipeName("seasoning", name));
+    }
+
     protected static String getSimpleRecipeName(ItemLike pItemLike) {
-        return SimpleBBQ.MOD_ID + ":" + getItemName(pItemLike);
+        return getSimpleRecipeName(getItemName(pItemLike));
+    }
+
+    protected static String getSimpleRecipeName(String name) {
+        return SimpleBBQ.MOD_ID + ":" + name;
     }
 
     protected static String getSimpleRecipeName(String pRecipeType, ItemLike pItemLike) {
-        return SimpleBBQ.MOD_ID + ":" + pRecipeType + "/" + getItemName(pItemLike);
+        return getSimpleRecipeName(pRecipeType, getItemName(pItemLike));
+    }
+
+    protected static String getSimpleRecipeName(String pRecipeType, String name) {
+        return SimpleBBQ.MOD_ID + ":" + pRecipeType + "/" + name;
     }
 
     @Override

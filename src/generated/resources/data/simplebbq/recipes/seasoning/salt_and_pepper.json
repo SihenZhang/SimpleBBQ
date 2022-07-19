@@ -1,0 +1,10 @@
+{
+  "type": "simplebbq:seasoning",
+  "ingredient": {
+    "tag": "simplebbq:can_be_seasoned/salt_and_pepper"
+  },
+  "seasoning": {
+    "item": "simplebbq:salt_and_pepper"
+  },
+  "name": "salt_and_pepper"
+}

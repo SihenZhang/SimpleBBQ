@@ -1,0 +1,10 @@
+{
+  "type": "simplebbq:seasoning",
+  "ingredient": {
+    "tag": "simplebbq:can_be_seasoned/honey"
+  },
+  "seasoning": {
+    "item": "minecraft:honey_bottle"
+  },
+  "name": "honey"
+}

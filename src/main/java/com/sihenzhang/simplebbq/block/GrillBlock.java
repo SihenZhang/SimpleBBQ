@@ -140,12 +140,72 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             }
 
             // try to cook
-            var optionalRecipe = grillBlockEntity.getCookableRecipe(stackInHand);
-            if (optionalRecipe.isPresent()) {
-                if (!pLevel.isClientSide() && grillBlockEntity.placeFood(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, optionalRecipe.get().getCookingTime())) {
+            var optionalCookingRecipe = grillBlockEntity.getCookableRecipe(stackInHand);
+            if (optionalCookingRecipe.isPresent()) {
+                if (!pLevel.isClientSide() && grillBlockEntity.placeFood(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, optionalCookingRecipe.get().getCookingTime())) {
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.CONSUME;
+            }
+
+            if (pHit.getType() == HitResult.Type.BLOCK && pHit.getDirection() == Direction.UP) {
+                var clickLocation = pHit.getLocation();
+                if (pState.hasProperty(FACING)) {
+                    var facing = pState.getValue(FACING);
+                    var isHittingLeftSide = false;
+                    var isHittingRightSide = false;
+                    switch (facing) {
+                        case NORTH -> {
+                            isHittingLeftSide = clickLocation.x - (double) pPos.getX() < 0.5;
+                            isHittingRightSide = clickLocation.x - (double) pPos.getX() > 0.5;
+                        }
+                        case SOUTH -> {
+                            isHittingLeftSide = clickLocation.x - (double) pPos.getX() > 0.5;
+                            isHittingRightSide = clickLocation.x - (double) pPos.getX() < 0.5;
+                        }
+                        case EAST -> {
+                            isHittingLeftSide = clickLocation.z - (double) pPos.getZ() < 0.5;
+                            isHittingRightSide = clickLocation.z - (double) pPos.getZ() > 0.5;
+                        }
+                        case WEST -> {
+                            isHittingLeftSide = clickLocation.z - (double) pPos.getZ() > 0.5;
+                            isHittingRightSide = clickLocation.z - (double) pPos.getZ() < 0.5;
+                        }
+                    }
+                    if (isHittingLeftSide) {
+                        // try to remove from the left side
+                        if (stackInHand.isEmpty()) {
+                            if (!pLevel.isClientSide() && grillBlockEntity.removeFood(pPlayer, pHand, true)) {
+                                return InteractionResult.SUCCESS;
+                            }
+                            return InteractionResult.CONSUME;
+                        }
+                        // try to season food from the left side
+                        var optionalSeasoningRecipe = grillBlockEntity.getSeasoningRecipe(stackInHand, true);
+                        if (optionalSeasoningRecipe.isPresent()) {
+                            if (!pLevel.isClientSide() && grillBlockEntity.addSeasoning(pPlayer, pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, true)) {
+                                return InteractionResult.SUCCESS;
+                            }
+                            return InteractionResult.CONSUME;
+                        }
+                    } else if (isHittingRightSide) {
+                        // try to remove from the right side
+                        if (stackInHand.isEmpty()) {
+                            if (!pLevel.isClientSide() && grillBlockEntity.removeFood(pPlayer, pHand, false)) {
+                                return InteractionResult.SUCCESS;
+                            }
+                            return InteractionResult.CONSUME;
+                        }
+                        // try to season food from the left side
+                        var optionalSeasoningRecipe = grillBlockEntity.getSeasoningRecipe(stackInHand, false);
+                        if (optionalSeasoningRecipe.isPresent()) {
+                            if (!pLevel.isClientSide() && grillBlockEntity.addSeasoning(pPlayer, pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, false)) {
+                                return InteractionResult.SUCCESS;
+                            }
+                            return InteractionResult.CONSUME;
+                        }
+                    }
+                }
             }
         }
         return InteractionResult.PASS;
