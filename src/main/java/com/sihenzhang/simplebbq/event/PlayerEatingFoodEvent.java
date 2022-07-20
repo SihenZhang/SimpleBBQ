@@ -56,6 +56,6 @@ public class PlayerEatingFoodEvent {
     }
 
     private static boolean hasSeasoning(ListTag seasoning, String name) {
-        return seasoning.stream().filter(tag -> tag instanceof StringTag).map(StringTag.class::cast).anyMatch(tag -> tag.getAsString().equalsIgnoreCase(name));
+        return seasoning.stream().filter(tag -> tag.getId() == Tag.TAG_STRING).map(StringTag.class::cast).anyMatch(tag -> tag.getAsString().equalsIgnoreCase(name));
     }
 }

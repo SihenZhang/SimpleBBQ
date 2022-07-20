@@ -18,8 +18,8 @@ import net.minecraft.world.item.crafting.RecipeSerializer;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
-import org.jetbrains.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import java.util.Locale;
 
 public class SeasoningRecipe implements Recipe<Container> {
@@ -46,7 +46,7 @@ public class SeasoningRecipe implements Recipe<Container> {
         if (seasoningTag != null && seasoningTag.contains("SeasoningList", Tag.TAG_LIST)) {
             var seasoningList = seasoningTag.getList("SeasoningList", Tag.TAG_STRING);
             for (var i = 0; i < seasoningList.size(); i++) {
-                if (seasoningList.getString(i).toLowerCase(Locale.ROOT).equals(name)) {
+                if (seasoningList.getString(i).equalsIgnoreCase(name)) {
                     return false;
                 }
             }
