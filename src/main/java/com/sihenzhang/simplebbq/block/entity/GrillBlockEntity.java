@@ -98,6 +98,7 @@ public class GrillBlockEntity extends BlockEntity {
                         var result = pLevel.getRecipeManager().getRecipeFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), container, pLevel).map(recipe -> recipe.assemble(container)).orElse(stackInSlot);
                         var seasoningTag = stackInSlot.getTagElement("Seasoning");
                         if (seasoningTag != null) {
+                            seasoningTag.putBoolean("HasEffect", true);
                             result.addTagElement("Seasoning", seasoningTag);
                         }
                         Containers.dropItemStack(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), result);
