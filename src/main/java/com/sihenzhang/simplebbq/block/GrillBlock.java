@@ -174,7 +174,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                     }
                     if (isHittingLeftSide) {
                         // try to remove from the left side
-                        if (stackInHand.isEmpty()) {
+                        if (pHand == InteractionHand.MAIN_HAND && stackInHand.isEmpty()) {
                             if (!pLevel.isClientSide() && grillBlockEntity.removeFood(pPlayer, pHand, true)) {
                                 return InteractionResult.SUCCESS;
                             }
@@ -190,7 +190,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                         }
                     } else if (isHittingRightSide) {
                         // try to remove from the right side
-                        if (stackInHand.isEmpty()) {
+                        if (pHand == InteractionHand.MAIN_HAND && stackInHand.isEmpty()) {
                             if (!pLevel.isClientSide() && grillBlockEntity.removeFood(pPlayer, pHand, false)) {
                                 return InteractionResult.SUCCESS;
                             }

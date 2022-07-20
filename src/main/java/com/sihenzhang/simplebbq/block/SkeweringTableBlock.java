@@ -38,7 +38,7 @@ public class SkeweringTableBlock extends BaseEntityBlock {
             var stackInHand = pPlayer.getItemInHand(pHand);
 
             // try to remove
-            if (stackInHand.isEmpty()) {
+            if (pHand == InteractionHand.MAIN_HAND && stackInHand.isEmpty()) {
                 if (!pLevel.isClientSide() && skeweringTableBlockEntity.removeFood(pPlayer, pHand)) {
                     return InteractionResult.SUCCESS;
                 }
