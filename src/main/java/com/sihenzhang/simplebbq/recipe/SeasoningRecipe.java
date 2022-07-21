@@ -20,6 +20,7 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistryEntry;
 
 import javax.annotation.Nullable;
+import java.util.Comparator;
 import java.util.Locale;
 
 public class SeasoningRecipe implements Recipe<Container> {
@@ -60,6 +61,8 @@ public class SeasoningRecipe implements Recipe<Container> {
         var seasoningTag = result.getOrCreateTagElement("Seasoning");
         var seasoningList = seasoningTag.getList("SeasoningList", Tag.TAG_STRING);
         seasoningList.add(StringTag.valueOf(name.toLowerCase(Locale.ROOT)));
+        // Sort the seasoning list so that item can be stacked even if the seasoning order is not the same
+        seasoningList.sort(Comparator.comparing(Tag::getAsString));
         seasoningTag.put("SeasoningList", seasoningList);
         return result;
     }

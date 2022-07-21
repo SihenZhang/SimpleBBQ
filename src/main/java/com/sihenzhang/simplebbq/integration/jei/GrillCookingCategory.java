@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.sihenzhang.simplebbq.SimpleBBQ;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
+import com.sihenzhang.simplebbq.util.I18nUtils;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -19,7 +20,6 @@ import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
 
 public class GrillCookingCategory implements IRecipeCategory<GrillCookingRecipe> {
@@ -70,7 +70,7 @@ public class GrillCookingCategory implements IRecipeCategory<GrillCookingRecipe>
 
     @Override
     public Component getTitle() {
-        return new TranslatableComponent("integration.simplebbq.jei.grill_cooking");
+        return I18nUtils.createComponent("integration", ModIntegrationJei.MOD_ID + ".grill_cooking");
     }
 
     @Override
@@ -97,7 +97,7 @@ public class GrillCookingCategory implements IRecipeCategory<GrillCookingRecipe>
         var cookTime = recipe.getCookingTime();
         if (cookTime > 0) {
             var cookTimeSeconds = cookTime / 20;
-            var timeString = new TranslatableComponent("gui.jei.category.smelting.time.seconds", cookTimeSeconds);
+            var timeString = I18nUtils.createComponent("gui", ModIntegrationJei.MOD_ID, "category.smelting.time.seconds", cookTimeSeconds);
             var fontRenderer = Minecraft.getInstance().font;
             var stringWidth = fontRenderer.width(timeString);
             fontRenderer.draw(stack, timeString, background.getWidth() - stringWidth, 35, 0xFF808080);

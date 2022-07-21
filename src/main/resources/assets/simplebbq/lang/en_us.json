@@ -26,6 +26,12 @@
   "item.simplebbq.roasted_mushroom_skewer": "Roasted Mushroom Skewer",
   "item.simplebbq.potato_skewer": "Potato Skewer",
   "item.simplebbq.baked_potato_skewer": "Baked Potato Skewer",
+  "tooltip.simplebbq.seasoning_with": "Seasoning With:",
+  "tooltip.simplebbq.seasoning_no_effect": "Seasoning effect would be activated when cooked.",
+  "tooltip.simplebbq.seasoning.chili_powder": "Chili Powder",
+  "tooltip.simplebbq.seasoning.cumin": "Cumin",
+  "tooltip.simplebbq.seasoning.honey": "Honey",
+  "tooltip.simplebbq.seasoning.salt_and_pepper": "Salt and Pepper",
   "integration.simplebbq.jei.grill_cooking": "Grilling",
   "integration.simplebbq.jei.skewering": "Skewering"
 }
