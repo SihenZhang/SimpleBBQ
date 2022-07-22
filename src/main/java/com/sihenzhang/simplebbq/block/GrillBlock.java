@@ -213,7 +213,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
 
     @Override
     public void stepOn(Level pLevel, BlockPos pPos, BlockState pState, Entity pEntity) {
-        if (!pEntity.fireImmune() && pState.getValue(LIT) && pEntity instanceof LivingEntity livingEntity && !EnchantmentHelper.hasFrostWalker(livingEntity)) {
+        if (!pEntity.fireImmune() && pState.hasProperty(LIT) && pState.getValue(LIT) && pEntity instanceof LivingEntity livingEntity && !EnchantmentHelper.hasFrostWalker(livingEntity)) {
             var damage = 1.0F;
             if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
                 var block = grillBlockEntity.getCampfireData().toBlockState().getBlock();
@@ -525,5 +525,10 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     @SuppressWarnings("deprecation")
     public boolean isPathfindable(BlockState pState, BlockGetter pLevel, BlockPos pPos, PathComputationType pType) {
         return false;
+    }
+
+    @Override
+    public boolean isBurning(BlockState state, BlockGetter level, BlockPos pos) {
+        return state.hasProperty(LIT) && state.getValue(LIT);
     }
 }
