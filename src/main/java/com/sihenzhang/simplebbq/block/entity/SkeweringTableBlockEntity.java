@@ -111,8 +111,10 @@ public class SkeweringTableBlockEntity extends BlockEntity {
         }
         var recipe = optionalRecipe.get();
         var result = recipe.assemble(container);
-        inventory.extractItem(0, recipe.getCount(), false);
-        skewer.shrink(1);
+        var resultCount = player != null && player.isShiftKeyDown() ? Math.min(skewer.getCount(), inventory.getStackInSlot(0).getCount() / recipe.getCount()) : 1;
+        result.setCount(resultCount);
+        inventory.extractItem(0, recipe.getCount() * resultCount, false);
+        skewer.shrink(resultCount);
         if (player != null) {
             ItemHandlerHelper.giveItemToPlayer(player, result);
         } else {
