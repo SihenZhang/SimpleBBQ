@@ -34,7 +34,7 @@ public class SeasoningCategory implements IRecipeCategory<SeasoningRecipe> {
 
     public SeasoningCategory(IGuiHelper guiHelper) {
         this.background = guiHelper.drawableBuilder(ModIntegrationJei.RECIPE_GUI_VANILLA, 0, 168, 125, 18).build();
-        this.icon = new DrawableDoubleItemStack(SimpleBBQRegistry.GRILL_BLOCK_ITEM.get().getDefaultInstance(), SimpleBBQRegistry.SALT_AND_PEPPER.get().getDefaultInstance());
+        this.icon = new DrawableDoubleItemStack(SimpleBBQRegistry.GRILL_BLOCK_ITEM.get().getDefaultInstance(), SimpleBBQRegistry.CHILI_POWDER.get().getDefaultInstance());
         this.cachedResultItems = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<>() {
             @Override
             public List<ItemStack> load(SeasoningRecipe key) {
