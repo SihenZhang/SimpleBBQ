@@ -72,6 +72,18 @@ public class SeasoningRecipe implements Recipe<Container> {
         return true;
     }
 
+    public Ingredient getIngredient() {
+        return ingredient;
+    }
+
+    public Ingredient getSeasoning() {
+        return seasoning;
+    }
+
+    public String getName() {
+        return name;
+    }
+
     @Override
     public NonNullList<Ingredient> getIngredients() {
         return Util.make(NonNullList.create(), list -> {
