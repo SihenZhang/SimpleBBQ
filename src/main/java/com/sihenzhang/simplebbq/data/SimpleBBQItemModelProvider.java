@@ -27,26 +27,26 @@ public class SimpleBBQItemModelProvider extends ItemModelProvider {
         this.simpleItem(SimpleBBQRegistry.CUMIN.get());
         this.simpleItem(SimpleBBQRegistry.SALT_AND_PEPPER.get());
 
-        this.simpleItem(SimpleBBQRegistry.BEEF_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.COOKED_BEEF_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.CHICKEN_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.COOKED_CHICKEN_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.MUTTON_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.COOKED_MUTTON_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.PORK_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.COOKED_PORK_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.RABBIT_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.COOKED_RABBIT_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.COD_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.COOKED_COD_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.SALMON_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.COOKED_SALMON_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.BREAD_SLICE_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.TOAST_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.MUSHROOM_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.ROASTED_MUSHROOM_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.POTATO_SKEWER.get());
-        this.simpleItem(SimpleBBQRegistry.BAKED_POTATO_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.BEEF_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.COOKED_BEEF_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.CHICKEN_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.COOKED_CHICKEN_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.MUTTON_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.COOKED_MUTTON_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.PORK_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.COOKED_PORK_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.RABBIT_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.COOKED_RABBIT_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.COD_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.COOKED_COD_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.SALMON_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.COOKED_SALMON_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.BREAD_SLICE_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.TOAST_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.MUSHROOM_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.ROASTED_MUSHROOM_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.POTATO_SKEWER.get());
+        this.simpleHandheldItem(SimpleBBQRegistry.BAKED_POTATO_SKEWER.get());
     }
 
     public ItemModelBuilder blockItem(Block block) {
@@ -67,6 +67,18 @@ public class SimpleBBQItemModelProvider extends ItemModelProvider {
 
     public ItemModelBuilder item(String name, ResourceLocation texture) {
         return this.singleTexture(name, RLUtils.createVanillaRL("item/generated"), "layer0", texture);
+    }
+
+    public ItemModelBuilder simpleHandheldItem(Item item) {
+        return this.simpleHandheldItem(item, RLUtils.createRL("item/" + getItemName(item)));
+    }
+
+    public ItemModelBuilder simpleHandheldItem(Item item, ResourceLocation texture) {
+        return this.handheldItem(getItemName(item), texture);
+    }
+
+    public ItemModelBuilder handheldItem(String name, ResourceLocation texture) {
+        return this.singleTexture(name, RLUtils.createVanillaRL("item/handheld"), "layer0", texture);
     }
 
     protected static String getBlockName(Block block) {
