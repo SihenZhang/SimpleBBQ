@@ -38,14 +38,16 @@ public class SeasoningCategory implements IRecipeCategory<SeasoningRecipe> {
         this.cachedResultItems = CacheBuilder.newBuilder().maximumSize(25).build(new CacheLoader<>() {
             @Override
             public List<ItemStack> load(SeasoningRecipe key) {
-                return Arrays.stream(key.getIngredient().getItems()).peek(item -> {
-                    var seasoningTag = item.getOrCreateTagElement("Seasoning");
+                return Arrays.stream(key.getIngredient().getItems()).map(stack -> {
+                    var copiedStack = stack.copy();
+                    var seasoningTag = copiedStack.getOrCreateTagElement("Seasoning");
                     var seasoningList = seasoningTag.getList("SeasoningList", Tag.TAG_STRING);
                     seasoningList.add(StringTag.valueOf(key.getName().toLowerCase(Locale.ROOT)));
                     // Sort the seasoning list so that item can be stacked even if the seasoning order is not the same
                     seasoningList.sort(Comparator.comparing(Tag::getAsString));
                     seasoningTag.put("SeasoningList", seasoningList);
                     seasoningTag.putBoolean("HasEffect", true);
+                    return copiedStack;
                 }).toList();
             }
         });
@@ -88,7 +90,7 @@ public class SeasoningCategory implements IRecipeCategory<SeasoningRecipe> {
         builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredients(recipe.getIngredient());
         builder.addSlot(RecipeIngredientRole.INPUT, 50, 1).addIngredients(recipe.getSeasoning());
         var resultItems = cachedResultItems.getUnchecked(recipe);
-        if (focuses.getFocuses(VanillaTypes.ITEM_STACK, RecipeIngredientRole.INPUT).findAny().isPresent()) {
+        if (resultItems.stream().anyMatch(stack -> focuses.getFocuses(VanillaTypes.ITEM_STACK, RecipeIngredientRole.INPUT).anyMatch(focus -> stack.sameItem(focus.getTypedValue().getIngredient())))) {
             resultItems = resultItems.stream().filter(stack -> focuses.getFocuses(VanillaTypes.ITEM_STACK, RecipeIngredientRole.INPUT).anyMatch(focus -> stack.sameItem(focus.getTypedValue().getIngredient()))).toList();
         }
         builder.addSlot(RecipeIngredientRole.OUTPUT, 108, 1).addItemStacks(resultItems);

@@ -33,5 +33,6 @@
   "tooltip.simplebbq.seasoning.honey": "Honey",
   "tooltip.simplebbq.seasoning.salt_and_pepper": "Salt and Pepper",
   "integration.simplebbq.jei.grill_cooking": "Grilling",
+  "integration.simplebbq.jei.seasoning": "Seasoning",
   "integration.simplebbq.jei.skewering": "Skewering"
 }
