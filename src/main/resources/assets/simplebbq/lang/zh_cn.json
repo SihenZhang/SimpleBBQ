@@ -34,5 +34,6 @@
   "tooltip.simplebbq.seasoning.salt_and_pepper": "椒盐",
   "integration.simplebbq.jei.grill_cooking": "烧烤",
   "integration.simplebbq.jei.seasoning": "调味",
-  "integration.simplebbq.jei.skewering": "制串"
+  "integration.simplebbq.jei.skewering": "制串",
+  "integration.simplebbq.jei.description.seasoning": "可以通过与制串师交易获得。"
 }

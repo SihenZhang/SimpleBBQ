@@ -1,14 +1,18 @@
 package com.sihenzhang.simplebbq.integration.jei;
 
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
+import com.sihenzhang.simplebbq.util.I18nUtils;
 import com.sihenzhang.simplebbq.util.RLUtils;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
+import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.registration.IRecipeCatalystRegistration;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
+
+import java.util.List;
 
 @JeiPlugin
 public class ModIntegrationJei implements IModPlugin {
@@ -34,6 +38,16 @@ public class ModIntegrationJei implements IModPlugin {
         registration.addRecipes(GrillCookingCategory.GRILL_COOKING_RECIPE_TYPE, recipeManager.getAllRecipesFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get()));
         registration.addRecipes(SeasoningCategory.SEASONING_RECIPE_TYPE, recipeManager.getAllRecipesFor(SimpleBBQRegistry.SEASONING_RECIPE_TYPE.get()));
         registration.addRecipes(SkeweringCategory.SKEWERING_RECIPE_TYPE, recipeManager.getAllRecipesFor(SimpleBBQRegistry.SKEWERING_RECIPE_TYPE.get()));
+
+        registration.addIngredientInfo(
+                List.of(
+                        SimpleBBQRegistry.CHILI_POWDER.get().getDefaultInstance(),
+                        SimpleBBQRegistry.CUMIN.get().getDefaultInstance(),
+                        SimpleBBQRegistry.SALT_AND_PEPPER.get().getDefaultInstance()
+                ),
+                VanillaTypes.ITEM_STACK,
+                I18nUtils.createComponent("integration", MOD_ID + ".description.seasoning")
+        );
     }
 
     @Override
