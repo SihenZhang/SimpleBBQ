@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = SimpleBBQ.MOD_ID)
-public class AddingTradesEvent {
+public class AddVillagerTradesEvent {
     @SubscribeEvent
     public static void onVillagerTrades(final VillagerTradesEvent event) {
         var profession = event.getType();

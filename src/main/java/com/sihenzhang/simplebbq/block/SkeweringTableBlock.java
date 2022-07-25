@@ -33,8 +33,7 @@ public class SkeweringTableBlock extends BaseEntityBlock {
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-        var blockEntity = pLevel.getBlockEntity(pPos);
-        if (blockEntity instanceof SkeweringTableBlockEntity skeweringTableBlockEntity) {
+        if (pLevel.getBlockEntity(pPos) instanceof SkeweringTableBlockEntity skeweringTableBlockEntity) {
             var stackInHand = pPlayer.getItemInHand(pHand);
 
             // try to remove

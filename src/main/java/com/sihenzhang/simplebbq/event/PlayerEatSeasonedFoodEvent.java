@@ -12,7 +12,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = SimpleBBQ.MOD_ID)
-public class PlayerEatingFoodEvent {
+public class PlayerEatSeasonedFoodEvent {
     @SubscribeEvent
     public static void onItemUseStart(final LivingEntityUseItemEvent.Start event) {
         var stack = event.getItem();
