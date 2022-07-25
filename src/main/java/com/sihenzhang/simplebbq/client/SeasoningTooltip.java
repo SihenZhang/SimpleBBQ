@@ -25,7 +25,7 @@ public class SeasoningTooltip {
             var seasoningList = seasoningTag.getList("SeasoningList", Tag.TAG_STRING);
             var hasEffect = seasoningTag.getBoolean("HasEffect");
             if (!seasoningList.isEmpty()) {
-                event.getToolTip().add(I18nUtils.createComponent("tooltip", "seasoning_with").withStyle(ChatFormatting.GRAY));
+                event.getToolTip().add(I18nUtils.createComponent("tooltip", "seasoned_with").withStyle(ChatFormatting.GRAY));
             }
             for (var i = 0; i < seasoningList.size(); i++) {
                 event.getToolTip().add(SPACE.get().append(I18nUtils.createComponent("tooltip", "seasoning." + seasoningList.getString(i)).withStyle(hasEffect ? ChatFormatting.YELLOW : ChatFormatting.DARK_GRAY)));
