@@ -1,8 +1,0 @@
-{
-  "type": "simplebbq:grill_cooking",
-  "ingredient": {
-    "item": "minecraft:kelp"
-  },
-  "result": "minecraft:dried_kelp",
-  "cookingtime": 400
-}

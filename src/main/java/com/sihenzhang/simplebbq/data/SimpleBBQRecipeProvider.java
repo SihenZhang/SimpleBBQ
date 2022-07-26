@@ -45,17 +45,6 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_stone_slab", has(Blocks.SMOOTH_STONE_SLAB))
                 .save(pFinishedRecipeConsumer);
 
-        // vanilla cooking recipe
-        grillCookingRecipe(pFinishedRecipeConsumer, Items.BEEF, Items.COOKED_BEEF, 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, Items.CHICKEN, Items.COOKED_CHICKEN, 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, Items.COD, Items.COOKED_COD, 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, Items.KELP, Items.DRIED_KELP, 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, Items.SALMON, Items.COOKED_SALMON, 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, Items.MUTTON, Items.COOKED_MUTTON, 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, Items.PORKCHOP, Items.COOKED_PORKCHOP, 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, Items.POTATO, Items.BAKED_POTATO, 400);
-        grillCookingRecipe(pFinishedRecipeConsumer, Items.RABBIT, Items.COOKED_RABBIT, 400);
-
         // skewering recipe
         skeweringRecipe(pFinishedRecipeConsumer, Items.BEEF, SimpleBBQRegistry.BEEF_SKEWER.get());
         skeweringRecipe(pFinishedRecipeConsumer, Items.CHICKEN, SimpleBBQRegistry.CHICKEN_SKEWER.get());

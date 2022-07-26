@@ -1,8 +1,0 @@
-{
-  "type": "simplebbq:grill_cooking",
-  "ingredient": {
-    "item": "minecraft:beef"
-  },
-  "result": "minecraft:cooked_beef",
-  "cookingtime": 400
-}

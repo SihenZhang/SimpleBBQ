@@ -1,8 +1,0 @@
-{
-  "type": "simplebbq:grill_cooking",
-  "ingredient": {
-    "item": "minecraft:cod"
-  },
-  "result": "minecraft:cooked_cod",
-  "cookingtime": 400
-}

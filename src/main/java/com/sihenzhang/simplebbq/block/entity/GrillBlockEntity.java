@@ -3,7 +3,6 @@ package com.sihenzhang.simplebbq.block.entity;
 import com.google.common.base.Preconditions;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.GrillBlock;
-import com.sihenzhang.simplebbq.recipe.GrillCookingRecipe;
 import com.sihenzhang.simplebbq.recipe.SeasoningRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,11 +13,14 @@ import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.AbstractCookingRecipe;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -47,7 +49,7 @@ public class GrillBlockEntity extends BlockEntity {
 
         @Override
         public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-            return level.getRecipeManager().getRecipeFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), new SimpleContainer(stack), level).isPresent();
+            return getCookingRecipe(new SimpleContainer(stack), level).isPresent();
         }
 
         @Override
@@ -95,7 +97,7 @@ public class GrillBlockEntity extends BlockEntity {
                     pBlockEntity.cookingProgress[i]++;
                     if (pBlockEntity.cookingProgress[i] >= pBlockEntity.cookingTime[i]) {
                         var container = new SimpleContainer(stackInSlot);
-                        var result = pLevel.getRecipeManager().getRecipeFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), container, pLevel).map(recipe -> recipe.assemble(container)).orElse(stackInSlot);
+                        var result = pBlockEntity.getCookingRecipe(container, pLevel).map(recipe -> recipe.assemble(container)).orElse(stackInSlot);
                         var seasoningTag = stackInSlot.getTagElement("Seasoning");
                         if (seasoningTag != null) {
                             seasoningTag.putBoolean("HasEffect", true);
@@ -183,10 +185,15 @@ public class GrillBlockEntity extends BlockEntity {
         return ClientboundBlockEntityDataPacket.create(this);
     }
 
-    public Optional<GrillCookingRecipe> getCookableRecipe(ItemStack input) {
+    public <C extends Container> Optional<? extends AbstractCookingRecipe> getCookingRecipe(C pInventory, Level pLevel) {
+        var grillCookingRecipe = pLevel.getRecipeManager().getRecipeFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), pInventory, pLevel);
+        return grillCookingRecipe.isPresent() ? grillCookingRecipe : pLevel.getRecipeManager().getRecipeFor(RecipeType.CAMPFIRE_COOKING, pInventory, pLevel);
+    }
+
+    public Optional<? extends AbstractCookingRecipe> getCookableRecipe(ItemStack input) {
         for (var i = 0; i < inventory.getSlots(); i++) {
             if (inventory.getStackInSlot(i).isEmpty()) {
-                return level.getRecipeManager().getRecipeFor(SimpleBBQRegistry.GRILL_COOKING_RECIPE_TYPE.get(), new SimpleContainer(input), level);
+                return this.getCookingRecipe(new SimpleContainer(input), level);
             }
         }
         return Optional.empty();

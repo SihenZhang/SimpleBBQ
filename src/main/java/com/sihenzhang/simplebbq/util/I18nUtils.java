@@ -22,4 +22,12 @@ public final class I18nUtils {
     public static TranslatableComponent createComponent(String prefix, String modId, String suffix, Object... args) {
         return new TranslatableComponent(prefix + "." + modId + "." + suffix, args);
     }
+
+    public static TranslatableComponent createIntegrationComponent(String modId, String suffix) {
+        return I18nUtils.createComponent("integration", SimpleBBQ.MOD_ID, modId + "." + suffix);
+    }
+
+    public static TranslatableComponent createIntegrationComponent(String modId, String suffix, Object... args) {
+        return I18nUtils.createComponent("integration", SimpleBBQ.MOD_ID, modId + "." + suffix, args);
+    }
 }

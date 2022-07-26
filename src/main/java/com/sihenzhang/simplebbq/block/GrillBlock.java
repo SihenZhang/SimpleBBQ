@@ -2,6 +2,7 @@ package com.sihenzhang.simplebbq.block;
 
 import com.google.common.base.Suppliers;
 import com.google.common.collect.ImmutableSet;
+import com.sihenzhang.simplebbq.SimpleBBQConfig;
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
 import com.sihenzhang.simplebbq.block.entity.GrillBlockEntity;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -22,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -141,7 +143,10 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             // try to cook
             var optionalCookingRecipe = grillBlockEntity.getCookableRecipe(stackInHand);
             if (optionalCookingRecipe.isPresent()) {
-                if (!pLevel.isClientSide() && grillBlockEntity.placeFood(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, optionalCookingRecipe.get().getCookingTime())) {
+                var cookingRecipe = optionalCookingRecipe.get();
+                var cookingTime = optionalCookingRecipe.get().getCookingTime();
+                var actualCookingTime = cookingRecipe.getType() == RecipeType.CAMPFIRE_COOKING ? Math.max((int) (cookingTime * SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_SPEED_MODIFIER.get()), 1) : cookingTime;
+                if (!pLevel.isClientSide() && grillBlockEntity.placeFood(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, actualCookingTime)) {
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.CONSUME;

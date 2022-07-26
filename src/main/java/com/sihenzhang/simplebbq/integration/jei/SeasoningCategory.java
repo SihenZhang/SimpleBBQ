@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SeasoningCategory implements IRecipeCategory<SeasoningRecipe> {
-    public static final RecipeType<SeasoningRecipe> SEASONING_RECIPE_TYPE = RecipeType.create(SimpleBBQ.MOD_ID, "seasoning", SeasoningRecipe.class);
+    public static final RecipeType<SeasoningRecipe> RECIPE_TYPE = RecipeType.create(SimpleBBQ.MOD_ID, "seasoning", SeasoningRecipe.class);
     private final IDrawable background;
     private final IDrawable icon;
     private final LoadingCache<SeasoningRecipe, List<ItemStack>> cachedResultItems;
@@ -67,12 +67,12 @@ public class SeasoningCategory implements IRecipeCategory<SeasoningRecipe> {
 
     @Override
     public RecipeType<SeasoningRecipe> getRecipeType() {
-        return SEASONING_RECIPE_TYPE;
+        return RECIPE_TYPE;
     }
 
     @Override
     public Component getTitle() {
-        return I18nUtils.createComponent("integration", ModIntegrationJei.MOD_ID + ".seasoning");
+        return I18nUtils.createIntegrationComponent(ModIntegrationJei.MOD_ID, "category.seasoning");
     }
 
     @Override

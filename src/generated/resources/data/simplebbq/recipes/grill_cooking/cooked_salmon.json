@@ -1,8 +1,0 @@
-{
-  "type": "simplebbq:grill_cooking",
-  "ingredient": {
-    "item": "minecraft:salmon"
-  },
-  "result": "minecraft:cooked_salmon",
-  "cookingtime": 400
-}

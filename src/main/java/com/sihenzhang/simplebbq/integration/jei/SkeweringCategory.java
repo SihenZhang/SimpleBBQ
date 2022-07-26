@@ -18,7 +18,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.Ingredient;
 
 public class SkeweringCategory implements IRecipeCategory<SkeweringRecipe> {
-    public static final RecipeType<SkeweringRecipe> SKEWERING_RECIPE_TYPE = RecipeType.create(SimpleBBQ.MOD_ID, "skewering", SkeweringRecipe.class);
+    public static final RecipeType<SkeweringRecipe> RECIPE_TYPE = RecipeType.create(SimpleBBQ.MOD_ID, "skewering", SkeweringRecipe.class);
     private final IDrawable background;
     private final IDrawable icon;
 
@@ -41,12 +41,12 @@ public class SkeweringCategory implements IRecipeCategory<SkeweringRecipe> {
 
     @Override
     public RecipeType<SkeweringRecipe> getRecipeType() {
-        return SKEWERING_RECIPE_TYPE;
+        return RECIPE_TYPE;
     }
 
     @Override
     public Component getTitle() {
-        return I18nUtils.createComponent("integration", ModIntegrationJei.MOD_ID + ".skewering");
+        return I18nUtils.createIntegrationComponent(ModIntegrationJei.MOD_ID, "category.skewering");
     }
 
     @Override

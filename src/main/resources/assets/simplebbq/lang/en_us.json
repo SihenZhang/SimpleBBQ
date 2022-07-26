@@ -32,8 +32,9 @@
   "tooltip.simplebbq.seasoning.cumin": "Cumin",
   "tooltip.simplebbq.seasoning.honey": "Honey",
   "tooltip.simplebbq.seasoning.salt_and_pepper": "Salt and Pepper",
-  "integration.simplebbq.jei.grill_cooking": "Grilling",
-  "integration.simplebbq.jei.seasoning": "Seasoning",
-  "integration.simplebbq.jei.skewering": "Skewering",
+  "integration.simplebbq.jei.category.grill_cooking": "Grilling",
+  "integration.simplebbq.jei.category.campfire_cooking_on_grill": "Campfire Cooking on Grill",
+  "integration.simplebbq.jei.category.seasoning": "Seasoning",
+  "integration.simplebbq.jei.category.skewering": "Skewering",
   "integration.simplebbq.jei.description.seasoning": "Obtained by trading with Skewerman."
 }
