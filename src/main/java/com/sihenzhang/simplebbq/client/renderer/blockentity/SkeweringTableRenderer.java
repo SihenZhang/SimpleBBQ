@@ -27,7 +27,7 @@ public class SkeweringTableRenderer implements BlockEntityRenderer<SkeweringTabl
         if (!itemStack.isEmpty()) {
             var itemRenderer = Minecraft.getInstance().getItemRenderer();
             var count = getRenderCount(itemStack);
-            var isBlockItem = itemRenderer.getModel(itemStack, pBlockEntity.getLevel(), null, 0).isGui3d();
+            var isBlockItem = itemRenderer.getModel(itemStack, pBlockEntity.getLevel(), null, posInt).isGui3d();
             var random = new Random(posInt);
             pPoseStack.pushPose();
             // center the item/block on the table

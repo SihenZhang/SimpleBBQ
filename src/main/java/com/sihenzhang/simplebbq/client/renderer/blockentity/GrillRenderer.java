@@ -26,7 +26,7 @@ public class GrillRenderer implements BlockEntityRenderer<GrillBlockEntity> {
             var itemStack = inventory.getStackInSlot(i);
             if (!itemStack.isEmpty()) {
                 var itemRenderer = mc.getItemRenderer();
-                var isBlockItem = itemRenderer.getModel(itemStack, pBlockEntity.getLevel(), null, 0).isGui3d();
+                var isBlockItem = itemRenderer.getModel(itemStack, pBlockEntity.getLevel(), null, posInt).isGui3d();
                 pPoseStack.pushPose();
                 // center the item/block on the grill
                 if (isBlockItem) {
