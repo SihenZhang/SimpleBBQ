@@ -160,20 +160,20 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                     var isHittingRightSide = false;
                     switch (facing) {
                         case NORTH -> {
-                            isHittingLeftSide = clickLocation.x - (double) pPos.getX() < 0.5;
-                            isHittingRightSide = clickLocation.x - (double) pPos.getX() > 0.5;
+                            isHittingLeftSide = clickLocation.x - (double) pPos.getX() < 0.5D;
+                            isHittingRightSide = clickLocation.x - (double) pPos.getX() > 0.5D;
                         }
                         case SOUTH -> {
-                            isHittingLeftSide = clickLocation.x - (double) pPos.getX() > 0.5;
-                            isHittingRightSide = clickLocation.x - (double) pPos.getX() < 0.5;
+                            isHittingLeftSide = clickLocation.x - (double) pPos.getX() > 0.5D;
+                            isHittingRightSide = clickLocation.x - (double) pPos.getX() < 0.5D;
                         }
                         case EAST -> {
-                            isHittingLeftSide = clickLocation.z - (double) pPos.getZ() < 0.5;
-                            isHittingRightSide = clickLocation.z - (double) pPos.getZ() > 0.5;
+                            isHittingLeftSide = clickLocation.z - (double) pPos.getZ() < 0.5D;
+                            isHittingRightSide = clickLocation.z - (double) pPos.getZ() > 0.5D;
                         }
                         case WEST -> {
-                            isHittingLeftSide = clickLocation.z - (double) pPos.getZ() > 0.5;
-                            isHittingRightSide = clickLocation.z - (double) pPos.getZ() < 0.5;
+                            isHittingLeftSide = clickLocation.z - (double) pPos.getZ() > 0.5D;
+                            isHittingRightSide = clickLocation.z - (double) pPos.getZ() < 0.5D;
                         }
                     }
                     if (isHittingLeftSide) {
@@ -347,10 +347,10 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         var clickRelativeX = clickLocation.x - (double) clickBlockPos.getX();
         var clickRelativeY = clickLocation.y - (double) clickBlockPos.getY();
         var clickRelativeZ = clickLocation.z - (double) clickBlockPos.getZ();
-        if ((clickRelativeX <= 0.0625 || clickRelativeX > 0.9375) && (clickRelativeZ <= 0.0625 || clickRelativeZ > 0.9375) && clickRelativeY <= 0.625) {
+        if ((clickRelativeX <= 0.0625D || clickRelativeX > 0.9375D) && (clickRelativeZ <= 0.0625D || clickRelativeZ > 0.9375D) && clickRelativeY <= 0.625D) {
             return true;
         }
-        return clickRelativeY > 0.625;
+        return clickRelativeY > 0.625D;
     }
 
     @Nullable

@@ -6,6 +6,7 @@ import com.sihenzhang.simplebbq.block.GrillBlock;
 import com.sihenzhang.simplebbq.recipe.SeasoningRecipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
@@ -126,8 +127,22 @@ public class GrillBlockEntity extends BlockEntity {
     public static void clientTick(Level pLevel, BlockPos pPos, BlockState pState, GrillBlockEntity pBlockEntity) {
         if (pState.hasProperty(GrillBlock.LIT) && pState.getValue(GrillBlock.LIT) && pBlockEntity.campfireData.lit) {
             var random = pLevel.getRandom();
+
             if (random.nextFloat() < 0.05F) {
                 GrillBlock.makeCampfireParticles(pLevel, pPos, false);
+            }
+
+            Direction facing = pState.getValue(GrillBlock.FACING);
+            for (var i = 0; i < pBlockEntity.inventory.getSlots(); i++) {
+                if (!pBlockEntity.inventory.getStackInSlot(i).isEmpty() && random.nextFloat() < 0.2F) {
+                    var d0 = (double) pPos.getX() + 0.5D + (facing.getAxis() == Direction.Axis.Z ? 0.2D * facing.getStepZ() : 0.0D);
+                    var d1 = (double) pPos.getY() + 1.0D;
+                    var d2 = (double) pPos.getZ() + 0.5D + (facing.getAxis() == Direction.Axis.X ? 0.2D * facing.getStepZ() : 0.0D);
+
+                    for (var j = 0; j < 4; j++) {
+                        pLevel.addParticle(ParticleTypes.SMOKE, d0, d1, d2, 0.0D, 5.0E-4D, 0.0D);
+                    }
+                }
             }
         }
     }
