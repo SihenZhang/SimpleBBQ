@@ -104,7 +104,7 @@ public class GrillBlockEntity extends BlockEntity {
                             seasoningTag.putBoolean("HasEffect", true);
                             result.addTagElement("Seasoning", seasoningTag);
                         }
-                        Containers.dropItemStack(pLevel, pPos.getX(), (double) pPos.getY() + 1.0D, pPos.getZ(), result);
+                        Containers.dropItemStack(pLevel, pPos.getX(), (double) pPos.getY() + 0.5D, pPos.getZ(), result);
                         pBlockEntity.inventory.setStackInSlot(i, ItemStack.EMPTY);
                     }
                 }
@@ -135,7 +135,7 @@ public class GrillBlockEntity extends BlockEntity {
             var facing = pState.getValue(GrillBlock.FACING);
             for (var i = 0; i < pBlockEntity.inventory.getSlots(); i++) {
                 if (!pBlockEntity.inventory.getStackInSlot(i).isEmpty() && random.nextFloat() < 0.2F) {
-                    var x = (double) pPos.getX() + 0.5D + (facing.getAxis() == Direction.Axis.Z ? (0.4D * i - 0.2D) * facing.getStepZ() : 0.0D);
+                    var x = (double) pPos.getX() + 0.5D + (facing.getAxis() == Direction.Axis.Z ? (0.2D - 0.4D * i) * facing.getStepZ() : 0.0D);
                     var y = (double) pPos.getY() + 1.1D;
                     var z = (double) pPos.getZ() + 0.5D + (facing.getAxis() == Direction.Axis.X ? (0.4D * i - 0.2D) * facing.getStepX() : 0.0D);
 
