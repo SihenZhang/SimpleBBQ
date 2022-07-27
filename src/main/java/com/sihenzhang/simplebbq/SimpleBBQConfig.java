@@ -8,7 +8,7 @@ public class SimpleBBQConfig {
     public static ForgeConfigSpec.DoubleValue CAMPFIRE_COOKING_ON_GRILL_SPEED_MODIFIER;
 
     static {
-        final ForgeConfigSpec.Builder commonBuilder = new ForgeConfigSpec.Builder();
+        final var commonBuilder = new ForgeConfigSpec.Builder();
 
         commonBuilder.comment("General settings").push("general");
         CAMPFIRE_COOKING_ON_GRILL_SPEED_MODIFIER = commonBuilder

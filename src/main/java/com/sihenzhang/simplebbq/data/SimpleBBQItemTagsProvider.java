@@ -22,6 +22,7 @@ public class SimpleBBQItemTagsProvider extends ItemTagsProvider {
     @Override
     protected void addTags() {
         this.tag(SimpleBBQItemTags.SKEWER).addTag(Tags.Items.RODS_WOODEN).add(Items.BAMBOO);
+        this.tag(SimpleBBQItemTags.SEASONING).add(Items.HONEY_BOTTLE, SimpleBBQRegistry.CHILI_POWDER.get(), SimpleBBQRegistry.CUMIN.get(), SimpleBBQRegistry.SALT_AND_PEPPER.get());
 
         var allSkewers = ImmutableSet.of(
                 SimpleBBQRegistry.BEEF_SKEWER.get(),

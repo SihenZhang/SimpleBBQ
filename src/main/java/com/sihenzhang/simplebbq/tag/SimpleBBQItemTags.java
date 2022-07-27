@@ -6,6 +6,7 @@ import net.minecraft.world.item.Item;
 
 public final class SimpleBBQItemTags {
     public static final TagKey<Item> SKEWER = TagUtils.createItemTag("skewer");
+    public static final TagKey<Item> SEASONING = TagUtils.createItemTag("seasoning");
 
     public static final TagKey<Item> CAN_BE_SEASONED_BY_HONEY = TagUtils.createItemTag("can_be_seasoned/honey");
     public static final TagKey<Item> CAN_BE_SEASONED_BY_CHILI_POWDER = TagUtils.createItemTag("can_be_seasoned/chili_powder");
