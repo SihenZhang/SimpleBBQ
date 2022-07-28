@@ -8,6 +8,7 @@ import mezz.jei.api.gui.drawable.IDrawableAnimated;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.CampfireCookingRecipe;
 
@@ -37,11 +38,11 @@ public class CampfireCookingOnGrillCategory extends AbstractCookingWithoutFuelAn
 
     @Override
     protected IDrawableAnimated getArrow(int cookingTime) {
-        return super.getArrow(Math.max((int) (cookingTime * SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_SPEED_MODIFIER.get()), 1));
+        return super.getArrow(Mth.clamp((int) (cookingTime * SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_COOKING_TIME_MODIFIER.get()), Math.min(SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_MINIMUM_COOKING_TIME.get(), cookingTime), cookingTime));
     }
 
     @Override
     protected void drawCookingTime(int cookingTime, PoseStack stack) {
-        super.drawCookingTime(Math.max((int) (cookingTime * SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_SPEED_MODIFIER.get()), 1), stack);
+        super.drawCookingTime(Mth.clamp((int) (cookingTime * SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_COOKING_TIME_MODIFIER.get()), Math.min(SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_MINIMUM_COOKING_TIME.get(), cookingTime), cookingTime), stack);
     }
 }

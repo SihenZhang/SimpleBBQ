@@ -145,7 +145,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
             if (optionalCookingRecipe.isPresent()) {
                 var cookingRecipe = optionalCookingRecipe.get();
                 var cookingTime = optionalCookingRecipe.get().getCookingTime();
-                var actualCookingTime = cookingRecipe.getType() == RecipeType.CAMPFIRE_COOKING ? Math.max((int) (cookingTime * SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_SPEED_MODIFIER.get()), 1) : cookingTime;
+                var actualCookingTime = cookingRecipe.getType() == RecipeType.CAMPFIRE_COOKING ? Mth.clamp((int) (cookingTime * SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_COOKING_TIME_MODIFIER.get()), Math.min(SimpleBBQConfig.CAMPFIRE_COOKING_ON_GRILL_MINIMUM_COOKING_TIME.get(), cookingTime), cookingTime) : cookingTime;
                 if (!pLevel.isClientSide() && grillBlockEntity.placeFood(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, actualCookingTime)) {
                     return InteractionResult.SUCCESS;
                 }
