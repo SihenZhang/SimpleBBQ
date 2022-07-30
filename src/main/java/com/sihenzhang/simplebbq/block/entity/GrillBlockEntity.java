@@ -260,6 +260,7 @@ public class GrillBlockEntity extends BlockEntity {
             return false;
         }
         inventory.setStackInSlot(isHittingLeftSide ? 0 : 1, result);
+        seasoning.shrink(1);
         var remainingItems = recipe.getRemainingItems(container);
         if (!remainingItems.isEmpty()) {
             remainingItems.forEach(item -> ItemHandlerHelper.giveItemToPlayer(player, item));
