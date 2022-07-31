@@ -332,13 +332,10 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     }
 
     private static HitResult getPlayerHitResult(Player pPlayer) {
-        var pickRange = 6.0D;
         var reachDistanceAttribute = pPlayer.getAttribute(ForgeMod.REACH_DISTANCE.get());
-        if (reachDistanceAttribute != null) {
-            var reachDistance = reachDistanceAttribute.getValue();
-            pickRange = pPlayer.isCreative() ? reachDistance : reachDistance - 0.5D;
-        }
-        return pPlayer.pick(pickRange, 1.0F, false);
+        var reachDistance = reachDistanceAttribute != null ? reachDistanceAttribute.getValue() : 5.0D;
+        reachDistance = pPlayer.isCreative() ? reachDistance : reachDistance - 0.5D;
+        return pPlayer.pick(reachDistance, 1.0F, false);
     }
 
     private static boolean isHittingGrill(BlockHitResult pHit) {
