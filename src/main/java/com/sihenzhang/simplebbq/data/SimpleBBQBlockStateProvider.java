@@ -15,7 +15,7 @@ public class SimpleBBQBlockStateProvider extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
         this.simpleBlock(SimpleBBQRegistry.GRILL_BLOCK.get(), this.models().getExistingFile(RLUtils.createRL("block/grill")));
-        this.horizontalBlock(SimpleBBQRegistry.SKEWERING_TABLE_BLOCK.get(),
+        this.simpleBlock(SimpleBBQRegistry.SKEWERING_TABLE_BLOCK.get(),
                 this.models().cube("skewering_table",
                         RLUtils.createRL("block/skewering_table_bottom"),
                         RLUtils.createVanillaRL("block/smooth_stone"),
