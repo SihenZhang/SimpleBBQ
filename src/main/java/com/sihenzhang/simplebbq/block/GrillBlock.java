@@ -331,6 +331,24 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         return super.onDestroyedByPlayer(state, level, pos, player, willHarvest, fluid);
     }
 
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter level, BlockPos pos, Player player) {
+        if (level.getBlockEntity(pos) instanceof GrillBlockEntity grillBlockEntity) {
+            var campfireState = grillBlockEntity.getCampfireData().toBlockState();
+            if (isCampfire(campfireState)) {
+                var hitResult = getPlayerHitResult(player);
+                if (hitResult.getType() == HitResult.Type.BLOCK) {
+                    var blockHitResult = (BlockHitResult) hitResult;
+                    if (!isHittingGrill(blockHitResult)) {
+                        return campfireState.getBlock().getCloneItemStack(campfireState, target, level, pos, player);
+                    }
+
+                }
+            }
+        }
+        return super.getCloneItemStack(state, target, level, pos, player);
+    }
+
     private static HitResult getPlayerHitResult(Player pPlayer) {
         var reachDistanceAttribute = pPlayer.getAttribute(ForgeMod.REACH_DISTANCE.get());
         var reachDistance = reachDistanceAttribute != null ? reachDistanceAttribute.getValue() : 5.0D;
