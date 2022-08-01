@@ -73,7 +73,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     public static final DirectionProperty FACING = BlockStateProperties.HORIZONTAL_FACING;
 
     public GrillBlock() {
-        super(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.LANTERN).lightLevel(state -> state.getValue(LIT) ? 15 : 0).noOcclusion());
+        super(Properties.of(Material.METAL, MaterialColor.NONE).requiresCorrectToolForDrops().strength(5.0F, 6.0F).sound(SoundType.LANTERN).lightLevel(state -> state.getValue(LIT) ? 15 : 0).dynamicShape().noOcclusion());
         this.registerDefaultState(stateDefinition.any().setValue(LIT, false).setValue(WATERLOGGED, false).setValue(FACING, Direction.NORTH));
     }
 
@@ -414,7 +414,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
         if (pLevel.getBlockEntity(pPos) instanceof GrillBlockEntity grillBlockEntity) {
             var campfireState = grillBlockEntity.getCampfireData().toBlockState();
             if (isCampfire(campfireState)) {
-                return Shapes.or(pBaseShape, campfireState.getBlock().getShape(pState, pLevel, pPos, pContext));
+                return Shapes.or(pBaseShape, campfireState.getBlock().getShape(campfireState, pLevel, pPos, pContext));
             }
         }
         return pBaseShape;
