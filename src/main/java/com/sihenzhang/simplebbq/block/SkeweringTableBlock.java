@@ -30,6 +30,11 @@ public class SkeweringTableBlock extends BaseEntityBlock {
         this.registerDefaultState(stateDefinition.any().setValue(FACING, Direction.NORTH));
     }
 
+    /**
+     * Place the food on the Skewering Table or take the food away from the Skewering Table.
+     * But before that, it will try to skewer the food on the Skewering Table.
+     * @see com.sihenzhang.simplebbq.event.PlayerUseSkeweringTableToSkewerEvent
+     */
     @Override
     @SuppressWarnings("deprecation")
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
@@ -39,14 +44,6 @@ public class SkeweringTableBlock extends BaseEntityBlock {
             // try to remove
             if (pHand == InteractionHand.MAIN_HAND && stackInHand.isEmpty()) {
                 if (!pLevel.isClientSide() && skeweringTableBlockEntity.removeFood(pPlayer, pHand)) {
-                    return InteractionResult.SUCCESS;
-                }
-                return InteractionResult.CONSUME;
-            }
-
-            // try to skewer
-            if (stackInHand.is(SimpleBBQItemTags.SKEWER)) {
-                if (!pLevel.isClientSide() && skeweringTableBlockEntity.skewer(pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, pPlayer)) {
                     return InteractionResult.SUCCESS;
                 }
                 return InteractionResult.CONSUME;

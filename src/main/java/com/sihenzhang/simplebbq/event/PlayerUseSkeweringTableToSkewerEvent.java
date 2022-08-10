@@ -10,7 +10,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = SimpleBBQ.MOD_ID)
-public class PlayerSneakToUseSkeweringTableEvent {
+public class PlayerUseSkeweringTableToSkewerEvent {
     @SubscribeEvent
     public static void onBlockRightClick(final PlayerInteractEvent.RightClickBlock event) {
         var level = event.getWorld();
@@ -19,12 +19,13 @@ public class PlayerSneakToUseSkeweringTableEvent {
             if (level.getBlockEntity(pos) instanceof SkeweringTableBlockEntity skeweringTableBlockEntity) {
                 var player = event.getPlayer();
                 var stackInHand = event.getItemStack();
-                if (player.isShiftKeyDown() && stackInHand.is(SimpleBBQItemTags.SKEWER)) {
+                if (stackInHand.is(SimpleBBQItemTags.SKEWER)) {
                     event.setCanceled(true);
                     if (!level.isClientSide() && skeweringTableBlockEntity.skewer(player.getAbilities().instabuild ? stackInHand.copy() : stackInHand, player)) {
                         event.setCancellationResult(InteractionResult.SUCCESS);
+                    } else {
+                        event.setCancellationResult(InteractionResult.CONSUME);
                     }
-                    event.setCancellationResult(InteractionResult.CONSUME);
                 }
             }
         }
