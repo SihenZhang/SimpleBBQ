@@ -46,7 +46,6 @@ public class SeasoningCategory implements IRecipeCategory<SeasoningRecipe> {
                     // Sort the seasoning list so that item can be stacked even if the seasoning order is not the same
                     seasoningList.sort(Comparator.comparing(Tag::getAsString));
                     seasoningTag.put("SeasoningList", seasoningList);
-                    seasoningTag.putBoolean("HasEffect", true);
                     return copiedStack;
                 }).toList();
             }
