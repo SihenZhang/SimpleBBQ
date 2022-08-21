@@ -58,16 +58,16 @@ public class SimpleBBQRecipeProvider extends RecipeProvider {
         skeweringRecipe(pFinishedRecipeConsumer, Items.POTATO, SimpleBBQRegistry.POTATO_SKEWER.get());
 
         // skewer cooking recipe
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.BEEF_SKEWER.get(), SimpleBBQRegistry.COOKED_BEEF_SKEWER.get(), 200);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.CHICKEN_SKEWER.get(), SimpleBBQRegistry.COOKED_CHICKEN_SKEWER.get(), 200);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.MUTTON_SKEWER.get(), SimpleBBQRegistry.COOKED_MUTTON_SKEWER.get(), 200);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.PORK_SKEWER.get(), SimpleBBQRegistry.COOKED_PORK_SKEWER.get(), 200);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RABBIT_SKEWER.get(), SimpleBBQRegistry.COOKED_RABBIT_SKEWER.get(), 200);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.COD_SKEWER.get(), SimpleBBQRegistry.COOKED_COD_SKEWER.get(), 200);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SALMON_SKEWER.get(), SimpleBBQRegistry.COOKED_SALMON_SKEWER.get(), 200);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.BREAD_SLICE_SKEWER.get(), SimpleBBQRegistry.TOAST_SKEWER.get(), 200);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.MUSHROOM_SKEWER.get(), SimpleBBQRegistry.ROASTED_MUSHROOM_SKEWER.get(), 200);
-        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.POTATO_SKEWER.get(), SimpleBBQRegistry.BAKED_POTATO_SKEWER.get(), 200);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.BEEF_SKEWER.get(), SimpleBBQRegistry.COOKED_BEEF_SKEWER.get(), 300);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.CHICKEN_SKEWER.get(), SimpleBBQRegistry.COOKED_CHICKEN_SKEWER.get(), 300);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.MUTTON_SKEWER.get(), SimpleBBQRegistry.COOKED_MUTTON_SKEWER.get(), 300);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.PORK_SKEWER.get(), SimpleBBQRegistry.COOKED_PORK_SKEWER.get(), 300);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.RABBIT_SKEWER.get(), SimpleBBQRegistry.COOKED_RABBIT_SKEWER.get(), 300);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.COD_SKEWER.get(), SimpleBBQRegistry.COOKED_COD_SKEWER.get(), 300);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.SALMON_SKEWER.get(), SimpleBBQRegistry.COOKED_SALMON_SKEWER.get(), 300);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.BREAD_SLICE_SKEWER.get(), SimpleBBQRegistry.TOAST_SKEWER.get(), 300);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.MUSHROOM_SKEWER.get(), SimpleBBQRegistry.ROASTED_MUSHROOM_SKEWER.get(), 300);
+        grillCookingRecipe(pFinishedRecipeConsumer, SimpleBBQRegistry.POTATO_SKEWER.get(), SimpleBBQRegistry.BAKED_POTATO_SKEWER.get(), 300);
 
         // seasoning recipe
         seasoningRecipe(pFinishedRecipeConsumer, Ingredient.of(SimpleBBQItemTags.CAN_BE_SEASONED_BY_HONEY), Items.HONEY_BOTTLE, "honey");
