@@ -1,7 +1,6 @@
 package com.sihenzhang.simplebbq.block;
 
 import com.sihenzhang.simplebbq.block.entity.SkeweringTableBlockEntity;
-import com.sihenzhang.simplebbq.tag.SimpleBBQItemTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
@@ -33,6 +32,7 @@ public class SkeweringTableBlock extends BaseEntityBlock {
     /**
      * Place the food on the Skewering Table or take the food away from the Skewering Table.
      * But before that, it will try to skewer the food on the Skewering Table.
+     *
      * @see com.sihenzhang.simplebbq.event.PlayerUseSkeweringTableToSkewerEvent
      */
     @Override

@@ -1,7 +1,6 @@
 package com.sihenzhang.simplebbq.integration.jei;
 
 import com.sihenzhang.simplebbq.SimpleBBQRegistry;
-import com.sihenzhang.simplebbq.tag.SimpleBBQItemTags;
 import com.sihenzhang.simplebbq.util.I18nUtils;
 import com.sihenzhang.simplebbq.util.RLUtils;
 import mezz.jei.api.IModPlugin;
@@ -13,7 +12,6 @@ import mezz.jei.api.registration.IRecipeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeType;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.List;
 
