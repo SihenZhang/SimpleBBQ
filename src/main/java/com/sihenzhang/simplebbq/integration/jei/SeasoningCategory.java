@@ -87,7 +87,11 @@ public class SeasoningCategory implements IRecipeCategory<SeasoningRecipe> {
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, SeasoningRecipe recipe, IFocusGroup focuses) {
-        builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addIngredients(recipe.getIngredient());
+        var inputItems = List.of(recipe.getIngredient().getItems());
+        if (inputItems.stream().anyMatch(stack -> focuses.getFocuses(VanillaTypes.ITEM_STACK, RecipeIngredientRole.OUTPUT).anyMatch(focus -> stack.sameItem(focus.getTypedValue().getIngredient())))) {
+            inputItems = inputItems.stream().filter(stack -> focuses.getFocuses(VanillaTypes.ITEM_STACK, RecipeIngredientRole.OUTPUT).anyMatch(focus -> stack.sameItem(focus.getTypedValue().getIngredient()))).toList();
+        }
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 1).addItemStacks(inputItems);
         builder.addSlot(RecipeIngredientRole.INPUT, 50, 1).addIngredients(recipe.getSeasoning());
         var resultItems = cachedResultItems.getUnchecked(recipe);
         if (resultItems.stream().anyMatch(stack -> focuses.getFocuses(VanillaTypes.ITEM_STACK, RecipeIngredientRole.INPUT).anyMatch(focus -> stack.sameItem(focus.getTypedValue().getIngredient())))) {

@@ -58,7 +58,6 @@ public class ModIntegrationJei implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         registration.addRecipeCatalyst(SimpleBBQRegistry.GRILL_BLOCK_ITEM.get().getDefaultInstance(), GrillCookingCategory.RECIPE_TYPE, CampfireCookingOnGrillCategory.RECIPE_TYPE, SeasoningCategory.RECIPE_TYPE);
-        ForgeRegistries.ITEMS.tags().getTag(SimpleBBQItemTags.SEASONING).forEach(seasoning -> registration.addRecipeCatalyst(seasoning.getDefaultInstance(), SeasoningCategory.RECIPE_TYPE));
         registration.addRecipeCatalyst(SimpleBBQRegistry.SKEWERING_TABLE_BLOCK_ITEM.get().getDefaultInstance(), SkeweringCategory.RECIPE_TYPE);
     }
 }
