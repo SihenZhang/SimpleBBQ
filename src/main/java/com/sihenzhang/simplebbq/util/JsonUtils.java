@@ -26,7 +26,7 @@ public final class JsonUtils {
         if (json.has(memberName)) {
             return convertToItemStack(json.get(memberName), memberName);
         } else {
-            throw new JsonSyntaxException("Missing " + memberName + ", expected to find an item stack(String or JsonObject");
+            throw new JsonSyntaxException("Missing " + memberName + ", expected to find an item stack(String or JsonObject)");
         }
     }
 

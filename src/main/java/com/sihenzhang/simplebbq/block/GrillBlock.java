@@ -200,7 +200,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
                             }
                             return InteractionResult.CONSUME;
                         }
-                        // try to season food from the left side
+                        // try to season food from the right side
                         var optionalSeasoningRecipe = grillBlockEntity.getSeasoningRecipe(stackInHand, false);
                         if (optionalSeasoningRecipe.isPresent()) {
                             if (!pLevel.isClientSide() && grillBlockEntity.addSeasoning(pPlayer, pPlayer.getAbilities().instabuild ? stackInHand.copy() : stackInHand, false)) {
