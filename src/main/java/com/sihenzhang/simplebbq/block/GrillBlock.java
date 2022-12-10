@@ -442,7 +442,7 @@ public class GrillBlock extends BaseEntityBlock implements SimpleWaterloggedBloc
     }
 
     public static boolean isCampfire(ItemStack pStack) {
-        return pStack.getItem() instanceof BlockItem blockItem && isCampfire(blockItem.getBlock().defaultBlockState());
+        return pStack != null && pStack.getItem() instanceof BlockItem blockItem && isCampfire(blockItem.getBlock().defaultBlockState());
     }
 
     @Override

@@ -25,8 +25,8 @@ public class SimpleBBQ {
 
         SimpleBBQRegistry.ITEMS.register(modEventBus);
         SimpleBBQRegistry.BLOCKS.register(modEventBus);
-        SimpleBBQRegistry.PARTICLE_TYPES.register(modEventBus);
         SimpleBBQRegistry.BLOCK_ENTITIES.register(modEventBus);
+        SimpleBBQRegistry.PARTICLE_TYPES.register(modEventBus);
         SimpleBBQRegistry.POI_TYPES.register(modEventBus);
         SimpleBBQRegistry.PROFESSIONS.register(modEventBus);
         SimpleBBQRegistry.RECIPE_TYPES.register(modEventBus);
